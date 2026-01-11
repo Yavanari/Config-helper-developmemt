@@ -41,7 +41,7 @@ ListOfFoundedConfigs := MyGui.Add("ListBox", " x20 y330 w200 h150 Background" . 
 ListOfExtractedConfigs := MyGui.Add("ListBox", " x250 y330 w200 h150 Background" . BackgroundColor . " c" . TextColor)
 MyGui.Add("Text", "x10 y470", " `n Made by: FunnyValentine `n Original idea: Salmon `n Tested By: Hiccup , Zad , Gnoemy, Royam") ;Credits
 MyGui.Add("Text", "x300 y34", "Controls")
-MyGui.Add("Text", "x415 y510", "Version 1.8a")
+MyGui.Add("Text", "x415 y510", "Version 1.8b")
 ;Download with discord Button
 LinkToConfig:=MyGui.AddEdit("x20 y280 w300 Background" . BackgroundColor . " c" . TextColor)
 MyGui.AddText("x20 y260", "Download config with direct link")
