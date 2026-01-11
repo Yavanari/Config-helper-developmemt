@@ -2,6 +2,7 @@
 #SingleInstance Force
 ; Start checking if something wrong 
 MsgBox("123")
+MsgBox("12333")
 try UpdateColors()
 AmountOfAssets:=0
 loop files, A_ScriptDir . "\Assets\*" , "F"
