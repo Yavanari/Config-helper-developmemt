@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 ; Start checking if something wrong 
+MsgBox("123")
 try UpdateColors()
 AmountOfAssets:=0
 loop files, A_ScriptDir . "\Assets\*" , "F"
