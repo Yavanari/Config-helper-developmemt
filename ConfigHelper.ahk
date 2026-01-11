@@ -1,49 +1,9 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-; Start checking if something wrong 
-MsgBox("123")
-MsgBox("12333")
-try UpdateColors()
-AmountOfAssets:=0
-loop files, A_ScriptDir . "\Assets\*" , "F"
-{
-    AmountOfAssets++
-}
-if (AmountOfAssets<15)
-{
-    MsgBox("Missing files in Assets folder `nRun updatehelper.ahk to download them")
-    ExitApp()        
-}
-if !FileExist(A_ScriptDir . "\Salmon_AV.exe")
-{
-    x:=Gui()
-    x.SetFont("c000000 s15", "Arial")
-    x.AddText("x10 y10" , "Config Helper filles supposed to be in Macro folder pls look at example below")
-    x.AddPicture("x10 y50" , A_ScriptDir . "\Assets\Bruh1.png")
-    x.OnEvent("Close" , (*) => ExitApp())
-    x.Show()
-    Pause
-}
-if !FileExist(A_ScriptDir . "\GuiSettings.txt")
-{
-SettingsText := 
-(
-"DO NOT DELETE THIS TEXT
-USE HEX COLORS FOR IT(remove # at the start of code)  FIRST IS BACKGROUND COLOR SECOND IS TEXT COLOR
-I DO NOT RECOMEND TO USE FULL WHITE BACKGROUND SINCE CLOSE AND MINIMIZE BUTTONS ARE WHITE
-SAVE FILE AND REOPEN HELPER TO APPLY SETTINGS
-Current color settings are
-1E1E1E
-009c5b
-Default color settings are
-1E1E1E
-009c5b"
-)
-FileObj := FileOpen(A_ScriptDir . "\GuiSettings.txt", "w")
-FileObj.Write(SettingsText)
-FileObj.Close()
-UpdateColors()
-}
+#Include AntiGreenieProtection.ahk
+#Include ManualImporting.ahk
+#Include PopularConfigs.ahk
+Antigreenie()
 global ManualImportingGui := Gui("-Caption 2 ") 
 MyGui := Gui("-Caption 2 ") 
 MyGui.BackColor := BackgroundColor
@@ -168,7 +128,6 @@ UpdateSaveFile(*)
     try ConfigFolder.Choose(SelectedConfigFolder) 
         SearchConfigs()
 }
-
 SearchConfigs(*)
 {
     if FileExist(ImportConfigs . "\" . SelectedConfigFolder . "\AutoDetect.txt") and (SelectedConfigFolder != "Default") and (SelectedConfigFolder != "")
@@ -441,90 +400,6 @@ Export(*)
     }
 UpdateSaveFile()
 }
-ManualImportingGuiShow(*)
-{ 
-    global CoordinatesPath, TeamPath, StrategyPath
-    ManualImportingGui := Gui("-Caption" , "Manual Selecting") 
-    ManualImportingGui.BackColor := BackgroundColor
-    TitleBar := ManualImportingGui.Add("Text", "w680 h30 Center Background" . BackgroundColor . " c" . TextColor, "Manual Selecting")
-    TitleBar.SetFont("s10 Bold", "Arial")
-    ManualImportingGui.SetFont("bold " . "c" TextColor . " s9", "Arial")
-    ManualImportingGui.AddText("x10 y310", "Select Gamemode:")
-    global ManualGamemode := ManualImportingGui.AddComboBox("vManGamemode x10 y330 w130 Background" . BackgroundColor . " c" . TextColor, ["Rift", "Raid", "Dungeon", "Event", "Portals", "Boss Rush", "Legend Stage" , "Infinite"])
-    ManualImportingGui.AddText("x150 y310", "Select Map:")
-    global ManualMaps := ManualImportingGui.AddDropDownList("vManMaps x150 y330 w130 Background" . BackgroundColor . " c" . TextColor, [""])
-    ManualImportingGui.AddText("x90 y360", "Team:")
-    global ManualTeam := ManualImportingGui.AddDropDownList("vManTeam x90 y380 w130 Background" . BackgroundColor . " c" . TextColor, ["Team1", "Team2", "Team3", "Team4", "Team5", "Team6", "Team7", "Team8"])
-    ManualGamemode.OnEvent("Change", (ctrl, *) => ManualUpdateMapList(ctrl, ManualMaps))
-    ManualImportingGui.Add("Picture", "x660 y10 w15 h15", A_ScriptDir "\Assets\Close.png").OnEvent("Click", (*) => ManualImportingGui.Hide())
-    ManualImportingGui.Add("Picture", "x630 y10 w15 h15", A_ScriptDir "\Assets\Minimize.png").OnEvent("Click", (*) => ManualImportingGui.Minimize())
-    AddFileSection(ManualImportingGui, "Strategy", 30, 50, 80, &StrategyPath, UpdateStrategyDisplay)
-    AddFileSection(ManualImportingGui, "Coordinates", 120, 140, 170, &CoordinatesPath)
-    AddFileSection(ManualImportingGui, "Team", 210, 230, 260, &TeamPath)
-    ManualImportingGui.AddText("x350 y30", "Current Strategy")
-    global DisplayStrategy := ManualImportingGui.AddListBox("x350 y50 w300 h420 Background" . BackgroundColor . " c" . TextColor " +Border")
-    ImportButton:=ManualImportingGui.AddText("x120 y420 w80 h30 Center + Border" , "Import").OnEvent("Click" , ManualImportingAction) 
-    OnMessage(0x201, (*) => PostMessage(0xA1, 2,,, "A")) 
-    ManualImportingGui.Show()
-}
-ManualUpdateMapList(SourceCtrl, TargetMapCtrl) {
-    TargetMapCtrl.Delete()
-    switch SourceCtrl.Value {
-        case 1: TargetMapCtrl.Add(["Kuinshi_Palace", "Mountain_Shrine", "Underground_Church"])
-        case 2: TargetMapCtrl.Add(["Spider_Forest", "Ruined_City", "Jojo_1", "Jojo_2"])
-        case 3: TargetMapCtrl.Add(["Jeju_Island", "Frozen_Volcano"])
-        case 4: TargetMapCtrl.Add(["Burning_Spirit_Tree", "Crystal_Chapel", "Double_Dungeon", "Golden_Castle", "Kuinshi_Palace", "Old_Lobby", "Old_Namek", "Shining_Castle", "The_Land_of_Gods", "  "])
-        case 5: TargetMapCtrl.Add(["Sun_Temple"])
-        case 6: TargetMapCtrl.Add(["Rumbling_Event", "Dark_Tainted_Tyrant", "Blood_Red_Chamber", "Shibuya_Aftermath"])
-        case 7: TargetMapCtrl.Add(["Crystal_Chapel", "Shining_Castle"])
-        case 8: TargetMapCtrl.Add(["Lich_Kings_Throne"])
-    }
-}
-ManualImportingAction(*)
-{
-    SelectedModeSearch := ManualGamemode.Text
-    SelectedMapSearch := ManualMaps.Text
-    SelectedTeam := ManualTeam.Text
-    StrategyPathCopy:=StrategyPath.text
-    CoordinatesPathCopy:=CoordinatesPath.text
-    TeamPathCopy:=TeamPath.text
-    try FileMove StrategyPathCopy , A_ScriptDir . "\Data\Config\" . SelectedModeSearch . "\" . SelectedMapSearch , 1
-    try FileMove TeamPathCopy, A_ScriptDir . "\Data\Config\Team\" . SelectedTeam . ".txt" , 1
-    try FileMove CoordinatesPathCopy, A_ScriptDir . "\Data\Config\" . SelectedModeSearch . "\" . SelectedMapSearch , 1
-    MsgBox("Imported Successfully")
-}   
-
-AddFileSection(GuiObj, Label, Ty, Ey, By, &EditObj, ExtraAction?) {
-    GuiObj.AddText("x10 y" Ty, Label)
-    EditObj := GuiObj.AddEdit("x10 y" Ey " w300 Background" . BackgroundColor . " c" . TextColor " ReadOnly") 
-    GuiObj.AddText("x10 y" By " w80 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Browse").OnEvent("Click", (*) => CustomFileSelect(EditObj, ExtraAction ?? ""))
-}
-CustomFileSelect(TargetEdit, ExtraAction := "") {
-    Selected := FileSelect(3, A_ScriptDir "\ImportConfigs", "Select file", "All Files (*.*)")
-    if (Selected != "") {
-        TargetEdit.Value := Selected
-    if HasMethod(ExtraAction)
-        ExtraAction(Selected)
-    }
-}
-UpdateStrategyDisplay(FilePath) 
-{
-    try {
-        FileContent := FileRead(FilePath)
-        DisplayStrategy.Delete()
-        FilteredLines := []
-        Loop Parse, FileContent, "`n", "`r" 
-        {
-            if (A_LoopField != "" && !InStr(A_LoopField, "None|None|0|None|None|0"))
-                FilteredLines.Push(A_LoopField)
-        }
-    }
-    if (FilteredLines.Length > 0)
-    {
-            DisplayStrategy.Add(FilteredLines) 
-    }
-} 
-
 ImportMountForCid(*)
 {
     UpdateSaveFile()
@@ -546,39 +421,6 @@ ImportMountForCid(*)
         try FileMove ImportConfigs . "\" . SelectedConfigFolder . "\Mount\"  , A_ScriptDir . "\Data\Roblox\Mount" , 1
         MsgBox("Successfully imported all mounts")
     }
-}
-CreateAllFolders(*)
-{   
-AllMapsByGamemode:= Map(
-    "Rift", ["Kuinshi_Palace", "Mountain_Shrine", "Underground_Church"],
-    "Raid", ["Spider_Forest", "Ruined_City", "Jojo_1", "Jojo_2"],
-    "Event", ["Burning_Spirit_Tree", "Crystal_Chapel", "Double_Dungeon", "Golden_Castle", "Kuinshi_Palace", "Old_Lobby", "Old_Namek", "Shining_Castle", "The_Land_of_Gods" , "Lich_Kings_Throne"],
-    "Dungeon", ["Jeju_island", "Frozen_Volcano"],
-    "Portals", ["Sun_Temple", "Lich_Kings_Throne"],
-    "Boss Rush", ["Rumbling_Event", "Dark_Tainted_Tyrant", "Blood_Red_Chamber", "Shibuya_Aftermath"],
-    "Legend Stage", ["Crystal_Chapel", "Shining_Castle" , "Imprisoned_Island" , "Burning_Spirit_Tree"],
-    "Infinite" , ["Lich_Kings_Throne"]
-)
-For GamemodeFolders, MapsForGamemode in AllMapsByGamemode
-{
-    for MapFolderName in MapsForGamemode
-    {           
-        CreatePath:=A_ScriptDir . "\Data\Config\" . GamemodeFolders . "\" . MapFolderName
-        if !DirExist(CreatePath)
-        {
-            DirCreate(CreatePath) 
-        }
-    }
-}
-AllSubFolders:=[A_ScriptDir . "\Data\Config\Default\All" ,A_ScriptDir . "\Data\Config\Team" , A_ScriptDir . "\Data\Roblox\Mount" , A_ScriptDir . "\Data\Config\Unit_Ability" ]
-for SubFolder in AllSubFolders
-{
-    if !DirExist(SubFolder)
-    {
-        DirCreate(SubFolder)
-    }
-}
-MsgBox("Created all Gamemode folders and Sub folders")
 }
 DeleteFolderIfNoTxt(*)
 {
@@ -652,128 +494,6 @@ DownloadConfig(*)
     {
         MsgBox("Link is empty")
     }
-}
-
-FilterConfig:=[]
-; Data for popular configs
-global ConfigData := [
-    { name: "Anni act 9(Cheez) 2:00 CT", image: "\Assets\CheezAct9.png", gamemode: "Event Anni" , y_start: 80,  x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1vejTGJpCf70PB5AgC3bEBwVQxGo_ueu8", discordLink: "https://discord.com/channels/1309512479386243072/1436697408582189128" },
-    { name: "Escanor All Rifts(Hiccup)", image: "\Assets\EscanorAllRifts.png", gamemode: "Rift" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1Li-uKHP29GjytDeZJHbl8KRA9_A_Jc4q", discordLink: "https://discord.com/channels/1309512479386243072/1438337915645333604" },
-    { name: "Anni act 9(Anself) 1:50 CT", image: "\Assets\AnsAct9.png",  gamemode: "Event Anni" ,y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1Q1A6I5fKXz0SEb-eakEKLgGanjbzqlrk", discordLink: "https://discord.com/channels/1309512479386243072/1449132950762422445" },
-    { name: "Escanor Solo Cid Act 2(Hiccup) 5:00 CT", image: "\Assets\EscanorAllRifts.png",  gamemode: "Raid" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1kxHoylw0ZaH6aFKF2YNIiFivPo8EWYtg", discordLink: "https://discord.com/channels/1309512479386243072/1435817560011706442" },
-    { name: "Jeju_Island(Hiccup) 20:00 CT",    image: "\Assets\JejuIslandHiccup.png",  gamemode: "Dungeon" ,  y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1n1Z8Nbsc8jEyr3JLK_F2M-kINBRHIcmx", discordLink: "https://discord.com/channels/1309512479386243072/1445200628602245294" }, 
-    { name: "Dio OH Cid Act 2 (Hiccup) 8:00 CT", image: "\Assets\DIoCidAct2.png",  gamemode: "Raid" ,y_start: 220,  x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1apsf_8bUn2yehHc3eY6SzqNfHoUVykEp", discordLink: "https://discord.com/channels/1309512479386243072/1445911411279794297" },
-    { name: "Broly Cid Act 2 (Royam) 7:00 CT",   image: "\Assets\BrolyCidAct2.png",  gamemode: "Raid" ,y_start: 360, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1kOcbQmr4A3EfL25SS9mrcgx3YRpOQQTO", discordLink: "https://discord.com/channels/1309512479386243072/1442204386020298923" },
-    { name: "Frozen Volcano Freeza",   image: "\Assets\FreezaFrozenVolcano.png",   gamemode: "Dungeon" ,y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1reMrrVfvRWgFFxmi7tV9YF8dw_rbc9rv", discordLink: "https://discord.com/channels/1309512479386243072/1374915274855284798" },
-    { name: "Merikatori P2W config", image:"\Assets\MeriConfig.png", gamemode: "All" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1xY14y9xfrTQJbZPx5C-g3Jh-qJ3f2NnP", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
-    { name: "Merikatori F2P config", image:"\Assets\MeriConfig.png", gamemode: "All", y_start: 80, x_col: 2, downloadLink: "https://drive.google.com/uc?export=download&id=1z7nfHRuxSQJ0lUfdptlKKv-3bQDTHZ0C", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
-    { name: "Fall Infinite (Kxizen)", image:"\Assets\FallInfKxizen.png",  gamemode: "Infinite" , y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1OJlvUCkE-Xjm4MCeNmY1edkG7zDCqzoZ", discordLink: "https://discord.com/channels/1309512479386243072/1448913041638035576"},
-    { name: "Fall Regular 3 Monarchs (Hiccup) 9:00 CT", image:"\Assets\FallRegular3Mon.png", gamemode: "Event Ainz" ,y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1CjwD8hzDjRg3XnlXsaO92sheEwCl53Uw", discordLink: "https://discord.com/channels/1309512479386243072/1449833858324369409"},
-    { name: "Fall Infinite (FunnyValentine)", image:"\Assets\FallInfValentine.png",  gamemode: "Infinite" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1NY0VkL62fLoUyXk7Vs8Tq0SGm4NcI2FN", discordLink:"https://discord.com/channels/1309512479386243072/1458687130623541248"}
-]
-X_COL1_TEXT := 30
-X_COL1_BUTTONS := 450
-X_COL2_TEXT := 600
-X_COL3_TEXT:= 1180   
-X_COL2_BUTTONS := 1030 
-X_COL3_BUTTONS := 1610
-BUTTON_WIDTH := 130
-PIC_HEIGHT := 90
-PopularConfigGui := Gui("-Caption")
-PopularConfigGui.BackColor := BackgroundColor
-PopularConfigGui.SetFont("cffffff s15", "Arial")
-TabCtrl := PopularConfigGui.Add("Tab3", "w1170 h530 +Border", ["Rift", "Raid" ,"Dungeon","Event Anni","Event Ainz","Portals","Boss Rush","Legend Stage","Infinite","Merikatori aio configs"])
-TabCtrl.SetFont("bold " . "c" TextColor . " s15", "Arial")
-PopularConfigGui.SetFont("bold " . "c" TextColor . " s11", "Arial")
-TabCtrl.UseTab(1)
-AutoImportCheckBox:=PopularConfigGui.AddCheckbox("x930 y500 vAutoImport" , "Auto import downloaded configs")
-AutoImportCheckBox.Value := 1
-AutoImport:=AutoImportCheckBox.Value
-for index, config in ConfigData 
-{
-    if config.HasOwnProp("gamemode") and (config.gamemode != "All")
-    {
-        TabCtrl.UseTab(config.gamemode)
-    }
-    else if (config.gamemode = "All")
-    {
-        TabCtrl.UseTab("Merikatori AIO configs")
-    }
- switch config.x_col
- {
- case 1:
-    x_text := X_COL1_TEXT
-    x_buttons := X_COL1_BUTTONS
- case 2:
-    x_text := X_COL2_TEXT
-    x_buttons := X_COL2_BUTTONS
- case 3:
-    x_text := X_COL3_TEXT
-    x_buttons := X_COL3_BUTTONS
- }
-y_text := config.y_start
-y_image := y_text + 30
-y_download := y_image
-y_link := y_image + 60 
-link_btn := PopularConfigGui.AddText("x" . x_buttons . " y" . y_link . " w" . BUTTON_WIDTH . " h35 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Link to config")
-OpenDiscordLink(url, *) {
-    Run(url)
-}
-link_btn.OnEvent("Click", OpenDiscordLink.Bind(config.discordLink))
-CloseButton2:=PopularConfigGui.AddText("x500 y500 w200 h30 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Close")
-CloseButton2.OnEvent("Click",(*) => PopularConfigGui.Hide())
-PopularConfigGui.AddText("x" . x_text . " y" . y_text, config.name)
-PopularConfigGui.AddPicture("x" . x_text . " y" . y_image . " w400 h" . PIC_HEIGHT, A_ScriptDir . config.image)
-download_btn := PopularConfigGui.AddText("x" . x_buttons . " y" . y_download . " w" . BUTTON_WIDTH . " h35 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Download Config")
-download_btn.OnEvent("Click", DownloadConfigHandler.Bind(config.downloadLink))
-OnMessage(0x201, EnableDrag)
-}
-DownloadConfigHandler(url, *)
-{
-    global DownloadLinkAuto := url 
-    DownloadConfig()
-    if (AutoImportCheckBox.Value = 1)
-    {
-        LatestPath := ""
-        LatestTime := 0
-        Loop Files, ImportConfigs . "\*", "D" 
-        {
-        if (A_LoopFileTimeCreated > LatestTime) 
-        {
-            LatestTime := A_LoopFileTimeCreated
-            LatestPath := A_LoopFileName
-        }
-        }
-        global SelectedConfigFolder:=LatestPath
-        AutoDetectRead:=FileRead(ImportConfigs . "\" . SelectedConfigFolder . "\AutoDetect.txt") 
-        Lines := StrSplit(AutoDetectRead, "`n", "`r") 
-        global AutoGamemode:=Lines[1]
-        global AutoMap:=Lines[2]
-        global SelectedModeSearch:=AutoGamemode
-        global SelectedMapSearch:=AutoMap
-        global SelectedMode:=1
-        global SelectedMap:=1
-        v:=Gui("-Caption 2 +AlwaysOnTop")
-        v.SetFont("bold c1E1E1E s9", "Arial")
-        v.BackColor:= BackgroundColor
-        v.AddText("X10 y10 Center c" . TextColor , "Select Team")
-        TeamAuto:=v.AddDropDownList("vTeamAuto w130 Background" . BackgroundColor . " c" . TextColor,["Team1", "Team2", "Team3", "Team4", "Team5", "Team6", "Team7", "Team8",])
-        ImportTeamButton:=v.Add("Text", "x45 y70 w70 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Import").OnEvent("Click" , (*) => Pause(0))
-        v.Show()
-        Pause
-        global SelectedTeam:=TeamAuto.Text
-        v.Destroy()
-        SearchConfigs()
-        Import()
-        DirDelete(ImportConfigs . "\" . LatestPath , 1)
-    }
-}
-UpdateColors(*)
-{
-FileContent := FileRead(A_ScriptDir . "\GuiSettings.txt") 
-Lines := StrSplit(FileContent, "`n", "`r") 
-global BackgroundColor:=Lines[6]
-global TextColor:=Lines[7]
 }
 CreateAllFolders()
 UpdateColors()
