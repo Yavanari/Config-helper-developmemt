@@ -26,7 +26,7 @@ loop files, A_ScriptDir . "\Assets\*" , "F"
 {
     AmountOfAssets++
 }
-if (AmountOfAssets<15)
+if (AmountOfAssets<16)
 {
     MsgBox("Missing files in Assets folder `nRun updatehelper.ahk to download them")
     ExitApp()        
