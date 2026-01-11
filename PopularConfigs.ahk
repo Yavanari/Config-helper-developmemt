@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 #Include ConfigHelper.ahk
+#Include AntiGreenieProtection.ahk
+UpdateColors()
 ; Data for popular configs
 global ConfigData := [
     { name: "Anni act 9(Cheez) 2:00 CT", image: "\Assets\CheezAct9.png", gamemode: "Event Anni" , y_start: 80,  x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1vejTGJpCf70PB5AgC3bEBwVQxGo_ueu8", discordLink: "https://discord.com/channels/1309512479386243072/1436697408582189128" },

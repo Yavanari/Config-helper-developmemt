@@ -3,7 +3,9 @@
 #Include AntiGreenieProtection.ahk
 #Include ManualImporting.ahk
 #Include PopularConfigs.ahk
+;ADD "AntiGreenie" FUNCTION HERE B4 RELEASING
 Antigreenie()
+UpdateColors()
 global ManualImportingGui := Gui("-Caption 2 ") 
 MyGui := Gui("-Caption 2 ") 
 MyGui.BackColor := BackgroundColor
@@ -25,9 +27,7 @@ MyGui.SetFont("bold " . "c" TextColor . " s9", "Arial")
 ListOfMountsImport:=[]
 global ImportingTeam :=""
 MyGui.Add("Text", "x20 y84", "Gamemode:",)
-DllCall("uxtheme\SetWindowTheme", "ptr", MyGui.Hwnd, "str", "DarkMode_Explorer", "ptr", 0)
 Gamemode := MyGui.AddComboBox("vGamemode w130 Background" . BackgroundColor , ["Rift", "Raid", "Dungeon", "Event", "Portals", "Boss Rush", "Legend Stage" , "Infinite"]) ; Drop down menu to choose gamemode
-DllCall("uxtheme\SetWindowTheme", "Ptr", Gamemode.Hwnd, "Str", "DarkMode_Explorer", "Ptr", 0)
 MyGui.Add("Text", "x20 y184", "Team: ")
 Team:=MyGui.AddDropDownList("vTeam w130 Background" . BackgroundColor . " c" . TextColor,["Team1", "Team2", "Team3", "Team4", "Team5", "Team6", "Team7", "Team8",]) ; Drop down menu to choose team
 MyGui.Add("Text", "x20 y134", "Map: ")
@@ -41,19 +41,6 @@ ListOfExtractedConfigs := MyGui.Add("ListBox", " x250 y330 w200 h150 Background"
 MyGui.Add("Text", "x10 y470", " `n Made by: FunnyValentine `n Original idea: Salmon `n Tested By: Hiccup , Zad , Gnoemy, Royam") ;Credits
 MyGui.Add("Text", "x300 y34", "Controls")
 MyGui.Add("Text", "x415 y510", "Version 1.8a")
-;Checking if Import and Export Folder exist
-global ImportConfigs := A_ScriptDir . "\ImportConfigs"
-global ExportConfig := A_ScriptDir . "\ExportConfig"
-global ExtractedConfigs:= A_ScriptDir . "\ExtractedConfigs"
-global PathToDefaultStrategy:= ImportConfigs . "\All_Strategy.txt"
-If !DirExist(ImportConfigs) || !DirExist(ExportConfig) || !DirExist(ExtractedConfigs)
-    {
-    DirCreate ImportConfigs ;Create Import folder if its not exist
-    DirCreate ExportConfig ;Create Export folder if its not exist
-    DirCreate ExtractedConfigs ;Create ExtractedConfigs folder if its not exist
-    MsgBox("Created Export and Import folders")
-}
-
 ;Download with discord Button
 LinkToConfig:=MyGui.AddEdit("x20 y280 w300 Background" . BackgroundColor . " c" . TextColor)
 MyGui.AddText("x20 y260", "Download config with direct link")

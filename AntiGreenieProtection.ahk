@@ -9,6 +9,18 @@ global TextColor:=Lines[7]
 }
 Antigreenie()
 {
+;Checking if Import and Export Folder exist
+global ImportConfigs := A_ScriptDir . "\ImportConfigs"
+global ExportConfig := A_ScriptDir . "\ExportConfig"
+global ExtractedConfigs:= A_ScriptDir . "\ExtractedConfigs"
+global PathToDefaultStrategy:= ImportConfigs . "\All_Strategy.txt"
+If !DirExist(ImportConfigs) || !DirExist(ExportConfig) || !DirExist(ExtractedConfigs)
+    {
+    DirCreate ImportConfigs ;Create Import folder if its not exist
+    DirCreate ExportConfig ;Create Export folder if its not exist
+    DirCreate ExtractedConfigs ;Create ExtractedConfigs folder if its not exist
+    MsgBox("Created Export and Import folders")
+}
 AmountOfAssets:=0
 loop files, A_ScriptDir . "\Assets\*" , "F"
 {
@@ -48,6 +60,11 @@ FileObj := FileOpen(A_ScriptDir . "\GuiSettings.txt", "w")
 FileObj.Write(SettingsText)
 FileObj.Close()
 UpdateColors()
+}
+if !FileExist(A_ScriptDir . "\WinRar.exe")
+{
+    MsgBox("Missing Winrar.exe`nRun UpdateHelper.ahk to download")
+    ExitApp
 }
 }
 CreateAllFolders(*)
