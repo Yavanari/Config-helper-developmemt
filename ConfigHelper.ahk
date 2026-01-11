@@ -4,6 +4,7 @@
 #Include ManualImporting.ahk
 #Include PopularConfigs.ahk
 ;ADD "AntiGreenie" FUNCTION HERE B4 RELEASING
+TraySetIcon (A_ScriptDir . "\Assets\TrayIcon.png")
 Antigreenie()
 UpdateColors()
 global ManualImportingGui := Gui("-Caption 2 ") 
