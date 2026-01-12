@@ -6,12 +6,12 @@ UpdateColors()
 ; Data for popular configs
 global ConfigData := [
     { name: "Anni act 9(Cheez) 2:00 CT", image: "\Assets\CheezAct9.png", gamemode: "Event Anni" , y_start: 80,  x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1vejTGJpCf70PB5AgC3bEBwVQxGo_ueu8", discordLink: "https://discord.com/channels/1309512479386243072/1436697408582189128" },
-    { name: "Escanor All Rifts(Hiccup)", image: "\Assets\EscanorAllRifts.png", gamemode: "Rift" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1Li-uKHP29GjytDeZJHbl8KRA9_A_Jc4q", discordLink: "https://discord.com/channels/1309512479386243072/1438337915645333604" },
+    { name: "Escanor All Rifts(Hiccup) NO ONE PIECE RIFT", image: "\Assets\EscanorAllRifts.png", gamemode: "Rift" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1Li-uKHP29GjytDeZJHbl8KRA9_A_Jc4q", discordLink: "https://discord.com/channels/1309512479386243072/1438337915645333604" },
     { name: "Anni act 9(Anself) 1:50 CT", image: "\Assets\AnsAct9.png",  gamemode: "Event Anni" ,y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1Q1A6I5fKXz0SEb-eakEKLgGanjbzqlrk", discordLink: "https://discord.com/channels/1309512479386243072/1449132950762422445" },
     { name: "Escanor Solo Cid Act 2(Hiccup) 5:00 CT", image: "\Assets\EscanorAllRifts.png",  gamemode: "Raid" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1kxHoylw0ZaH6aFKF2YNIiFivPo8EWYtg", discordLink: "https://discord.com/channels/1309512479386243072/1435817560011706442" },
     { name: "Jeju_Island(Hiccup) 20:00 CT",    image: "\Assets\JejuIslandHiccup.png",  gamemode: "Dungeon" ,  y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1n1Z8Nbsc8jEyr3JLK_F2M-kINBRHIcmx", discordLink: "https://discord.com/channels/1309512479386243072/1445200628602245294" }, 
     { name: "Dio OH Cid Act 2 (Hiccup) 8:00 CT", image: "\Assets\DIoCidAct2.png",  gamemode: "Raid" ,y_start: 220,  x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1apsf_8bUn2yehHc3eY6SzqNfHoUVykEp", discordLink: "https://discord.com/channels/1309512479386243072/1445911411279794297" },
-    { name: "Sasuke Cid Act 2 (Gnoemy) ~3:00 CT",   image: "\Assets\BrolyCidAct2.png",  gamemode: "Raid" ,y_start: 360, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1kOcbQmr4A3EfL25SS9mrcgx3YRpOQQTO", discordLink: "https://discord.com/channels/1309512479386243072/1442204386020298923" },
+    { name: "Sasuke Cid Act 2 (Gnoemy) ~3:00 CT",   image: "\Assets\CidSasuke.png",  gamemode: "Raid" ,y_start: 360, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1b4rAeBbw-PoRQaOLrmi_8qkpCbAdvncl", discordLink: "https://discord.com/channels/1309512479386243072/1444442525359276192" },
     { name: "Frozen Volcano Freeza",   image: "\Assets\FreezaFrozenVolcano.png",   gamemode: "Dungeon" ,y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1reMrrVfvRWgFFxmi7tV9YF8dw_rbc9rv", discordLink: "https://discord.com/channels/1309512479386243072/1374915274855284798" },
     { name: "Merikatori P2W config", image:"\Assets\MeriConfig.png", gamemode: "All" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1xY14y9xfrTQJbZPx5C-g3Jh-qJ3f2NnP", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
     { name: "Merikatori F2P config", image:"\Assets\MeriConfig.png", gamemode: "All", y_start: 80, x_col: 2, downloadLink: "https://drive.google.com/uc?export=download&id=1z7nfHRuxSQJ0lUfdptlKKv-3bQDTHZ0C", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
@@ -31,7 +31,7 @@ PIC_HEIGHT := 90
 PopularConfigGui := Gui("-Caption")
 PopularConfigGui.BackColor := BackgroundColor
 PopularConfigGui.SetFont("cffffff s15", "Arial")
-TabCtrl := PopularConfigGui.Add("Tab3", "w1170 h530 +Border", ["Rift", "Raid" ,"Dungeon","Event Anni","Event Ainz","Portals","Boss Rush","Legend Stage","Infinite","Merikatori aio configs"])
+TabCtrl := PopularConfigGui.Add("Tab3", "w1170 h530 +Border +Multi", ["Rift", "Raid" ,"Dungeon","Event Anni","Event Ainz","Portals","Infinite","Merikatori aio configs"])
 TabCtrl.SetFont("bold " . "c" TextColor . " s15", "Arial")
 PopularConfigGui.SetFont("bold " . "c" TextColor . " s11", "Arial")
 TabCtrl.UseTab(1)
@@ -113,6 +113,10 @@ DownloadConfigHandler(url, *)
         global SelectedTeam:=TeamAuto.Text
         v.Destroy()
         SearchConfigs()
+        if DirExist(ImportConfigs . "\" . LatestPath . "\Mount")
+        {
+            FileMove ImportConfigs . "\" . LatestPath . "\Mount" , A_ScriptDir . "\Data\Roblox\Mount" , 1
+        }
         Import()
         DirDelete(ImportConfigs . "\" . LatestPath , 1)
     }
