@@ -118,6 +118,6 @@ DownloadConfigHandler(url, *)
             FileMove ImportConfigs . "\" . LatestPath . "\Mount" , A_ScriptDir . "\Data\Roblox\Mount" , 1
         }
         Import()
-        DirDelete(ImportConfigs . "\" . LatestPath , 1)
+        try DirDelete(ImportConfigs . "\" . LatestPath , 1)
     }
 }
