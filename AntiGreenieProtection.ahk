@@ -1,12 +1,5 @@
 ﻿#Requires AutoHotkey v2.0
-#Include ConfigHelper.ahk
-UpdateColors(*)
-{
-FileContent := FileRead(A_ScriptDir . "\GuiSettings.txt") 
-Lines := StrSplit(FileContent, "`n", "`r") 
-global BackgroundColor:=Lines[6]
-global TextColor:=Lines[7]
-}
+#SingleInstance Force
 Antigreenie()
 {
 ;Checking if Import and Export Folder exist
@@ -41,38 +34,18 @@ if !FileExist(A_ScriptDir . "\Salmon_AV.exe")
     x.Show()
     Pause
 }
-if !FileExist(A_ScriptDir . "\GuiSettings.txt")
-{
-SettingsText := 
-(
-"DO NOT DELETE THIS TEXT
-USE HEX COLORS FOR IT(remove # at the start of code)  FIRST IS BACKGROUND COLOR SECOND IS TEXT COLOR
-I DO NOT RECOMEND TO USE FULL WHITE BACKGROUND SINCE CLOSE AND MINIMIZE BUTTONS ARE WHITE
-SAVE FILE AND REOPEN HELPER TO APPLY SETTINGS
-Current color settings are
-1E1E1E
-009c5b
-Default color settings are
-1E1E1E
-009c5b"
-)
-FileObj := FileOpen(A_ScriptDir . "\GuiSettings.txt", "w")
-FileObj.Write(SettingsText)
-FileObj.Close()
-UpdateColors()
 }
 if !FileExist(A_ScriptDir . "\WinRar.exe")
 {
     MsgBox("Missing Winrar.exe`nRun UpdateHelper.ahk to download")
     ExitApp
 }
-}
 CreateAllFolders(*)
 {   
 AllMapsByGamemode:= Map(
-    "Rift", ["Kuinshi_Palace", "Mountain_Shrine", "Underground_Church"],
-    "Raid", ["Spider_Forest", "Ruined_City", "Jojo_1", "Jojo_2"],
-    "Event", ["Burning_Spirit_Tree", "Crystal_Chapel", "Double_Dungeon", "Golden_Castle", "Kuinshi_Palace", "Old_Lobby", "Old_Namek", "Shining_Castle", "The_Land_of_Gods" , "Lich_Kings_Throne"],
+    "Rift", ["Kuinshi_Palace", "Mountain_Shrine", "Underground_Church" , "Imprisoned_Island"],
+    "Raid", ["Spider_Forest", "Ruined_City", "Jojo_1", "Jojo_2" , "HAPPY_Factory"],
+    "Event", ["Burning_Spirit_Tree", "Crystal_Chapel", "Double_Dungeon", "Golden_Castle", "Kuinshi_Palace", "Old_Lobby", "Old_Namek", "Shining_Castle", "The_Land_of_Gods" , "Lich_Kings_Throne" , "Frozen_Port"],
     "Dungeon", ["Jeju_island", "Frozen_Volcano"],
     "Portals", ["Sun_Temple", "Lich_Kings_Throne"],
     "Boss Rush", ["Rumbling_Event", "Dark_Tainted_Tyrant", "Blood_Red_Chamber", "Shibuya_Aftermath"],
@@ -100,4 +73,30 @@ for SubFolder in AllSubFolders
 }
 MsgBox("Created all Gamemode folders and Sub folders")
 }
-UpdateColors()
+UpdateColors(*)
+{
+if !FileExist(A_ScriptDir . "\GuiSettings.txt")
+{
+
+SettingsText := 
+(
+"DO NOT DELETE THIS TEXT
+USE HEX COLORS FOR IT(remove # at the start of code)  FIRST IS BACKGROUND COLOR SECOND IS TEXT COLOR
+I DO NOT RECOMEND TO USE FULL WHITE BACKGROUND SINCE CLOSE AND MINIMIZE BUTTONS ARE WHITE
+SAVE FILE AND REOPEN HELPER TO APPLY SETTINGS
+Current color settings are
+1E1E1E
+009c5b
+Default color settings are
+1E1E1E
+009c5b"
+)
+FileObj := FileOpen(A_ScriptDir . "\GuiSettings.txt", "w")
+FileObj.Write(SettingsText)
+FileObj.Close()
+}
+FileContent := FileRead(A_ScriptDir . "\GuiSettings.txt") 
+Lines := StrSplit(FileContent, "`n", "`r") 
+global BackgroundColor:=Lines[6]
+global TextColor:=Lines[7]
+}

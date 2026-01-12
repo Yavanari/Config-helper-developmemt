@@ -3,10 +3,12 @@
 #Include AntiGreenieProtection.ahk
 #Include ManualImporting.ahk
 #Include PopularConfigs.ahk
+global AutoMap:=""
+global AutoGamemode:=""
 ;ADD "AntiGreenie" FUNCTION HERE B4 RELEASING
-TraySetIcon (A_ScriptDir . "\Assets\TrayIcon.png")
 Antigreenie()
 UpdateColors()
+TraySetIcon (A_ScriptDir . "\Assets\TrayIcon.png")
 global ManualImportingGui := Gui("-Caption 2 ") 
 MyGui := Gui("-Caption 2 ") 
 MyGui.BackColor := BackgroundColor
@@ -41,7 +43,7 @@ ListOfFoundedConfigs := MyGui.Add("ListBox", " x20 y330 w200 h150 Background" . 
 ListOfExtractedConfigs := MyGui.Add("ListBox", " x250 y330 w200 h150 Background" . BackgroundColor . " c" . TextColor)
 MyGui.Add("Text", "x10 y470", " `n Made by: FunnyValentine `n Original idea: Salmon `n Tested By: Hiccup , Zad , Gnoemy, Royam") ;Credits
 MyGui.Add("Text", "x300 y34", "Controls")
-MyGui.Add("Text", "x415 y510", "Version 1.8b")
+MyGui.Add("Text", "x415 y510", "Version 1.8c")
 ;Download with discord Button
 LinkToConfig:=MyGui.AddEdit("x20 y280 w300 Background" . BackgroundColor . " c" . TextColor)
 MyGui.AddText("x20 y260", "Download config with direct link")
@@ -78,13 +80,13 @@ MapList(Maps*)
     switch SelectedMode
     {
         case 1:
-            MapsAndActs.Add(["Kuinshi_Palace", "Mountain_Shrine", "Underground_Church"]) ;Drop down list for Rift
+            MapsAndActs.Add(["Kuinshi_Palace", "Mountain_Shrine", "Underground_Church" , "Imprisoned_Island"]) ;Drop down list for Rift
         case 2:
-            MapsAndActs.Add(["Spider_Forest", "Ruined_City", "Jojo_1", "Jojo_2"]) ;Drop down list for Cid
+            MapsAndActs.Add(["Spider_Forest", "Ruined_City", "Jojo_1", "Jojo_2" , "HAPPY_Factory"]) ;Drop down list for Cid
         case 3:
             MapsAndActs.Add(["Jeju_Island", "Frozen_Volcano"]) ;Drop down list for Dungeons
         case 4:
-            MapsAndActs.Add(["Burning_Spirit_Tree", "Crystal_Chapel", "Double_Dungeon", "Golden_Castle", "Kuinshi_Palace", "Old_Lobby", "Old_Namek", "Shining_Castle", "The_Land_of_Gods", "Lich_Kings_Throne"]) ;Drop down list for Event
+            MapsAndActs.Add(["Burning_Spirit_Tree", "Crystal_Chapel", "Double_Dungeon", "Golden_Castle", "Kuinshi_Palace", "Old_Lobby", "Old_Namek", "Shining_Castle", "The_Land_of_Gods", "Lich_Kings_Throne" , "Frozen_Port"]) ;Drop down list for Event
         case 5:
             MapsAndActs.Add(["Sun_Temple"]) ;Drop down list for Portals
         case 6:
@@ -237,7 +239,6 @@ UnZip(*)
     }
 UpdateSaveFile()
 }
-
 Import(*)
 {
     if (AutoImportCheckBox.Value != 1)
@@ -424,6 +425,9 @@ DeleteFolderIfNoTxt(*)
         if (PathToDeleteFodler != A_ScriptDir . "\ImportConfigs\")
         {
         try DirDelete(PathToDeleteFodler , 1)
+        Gamemode.Delete()
+        MapsAndActs.Delete()
+        Team.Delete()
         }
     } 
 }
@@ -484,7 +488,6 @@ DownloadConfig(*)
     }
 }
 CreateAllFolders()
-UpdateColors()
 UpdateSaveFile()
 MyGui.Show()
 

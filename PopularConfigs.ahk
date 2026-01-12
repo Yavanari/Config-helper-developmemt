@@ -1,4 +1,5 @@
 #Requires AutoHotkey v2.0
+#SingleInstance Force
 #Include ConfigHelper.ahk
 #Include AntiGreenieProtection.ahk
 UpdateColors()
@@ -10,13 +11,14 @@ global ConfigData := [
     { name: "Escanor Solo Cid Act 2(Hiccup) 5:00 CT", image: "\Assets\EscanorAllRifts.png",  gamemode: "Raid" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1kxHoylw0ZaH6aFKF2YNIiFivPo8EWYtg", discordLink: "https://discord.com/channels/1309512479386243072/1435817560011706442" },
     { name: "Jeju_Island(Hiccup) 20:00 CT",    image: "\Assets\JejuIslandHiccup.png",  gamemode: "Dungeon" ,  y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1n1Z8Nbsc8jEyr3JLK_F2M-kINBRHIcmx", discordLink: "https://discord.com/channels/1309512479386243072/1445200628602245294" }, 
     { name: "Dio OH Cid Act 2 (Hiccup) 8:00 CT", image: "\Assets\DIoCidAct2.png",  gamemode: "Raid" ,y_start: 220,  x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1apsf_8bUn2yehHc3eY6SzqNfHoUVykEp", discordLink: "https://discord.com/channels/1309512479386243072/1445911411279794297" },
-    { name: "Broly Cid Act 2 (Royam) 7:00 CT",   image: "\Assets\BrolyCidAct2.png",  gamemode: "Raid" ,y_start: 360, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1kOcbQmr4A3EfL25SS9mrcgx3YRpOQQTO", discordLink: "https://discord.com/channels/1309512479386243072/1442204386020298923" },
+    { name: "Sasuke Cid Act 2 (Gnoemy) ~3:00 CT",   image: "\Assets\BrolyCidAct2.png",  gamemode: "Raid" ,y_start: 360, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1kOcbQmr4A3EfL25SS9mrcgx3YRpOQQTO", discordLink: "https://discord.com/channels/1309512479386243072/1442204386020298923" },
     { name: "Frozen Volcano Freeza",   image: "\Assets\FreezaFrozenVolcano.png",   gamemode: "Dungeon" ,y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1reMrrVfvRWgFFxmi7tV9YF8dw_rbc9rv", discordLink: "https://discord.com/channels/1309512479386243072/1374915274855284798" },
     { name: "Merikatori P2W config", image:"\Assets\MeriConfig.png", gamemode: "All" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1xY14y9xfrTQJbZPx5C-g3Jh-qJ3f2NnP", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
     { name: "Merikatori F2P config", image:"\Assets\MeriConfig.png", gamemode: "All", y_start: 80, x_col: 2, downloadLink: "https://drive.google.com/uc?export=download&id=1z7nfHRuxSQJ0lUfdptlKKv-3bQDTHZ0C", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
     { name: "Fall Infinite (Kxizen)", image:"\Assets\FallInfKxizen.png",  gamemode: "Infinite" , y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1OJlvUCkE-Xjm4MCeNmY1edkG7zDCqzoZ", discordLink: "https://discord.com/channels/1309512479386243072/1448913041638035576"},
     { name: "Fall Regular 3 Monarchs (Hiccup) 9:00 CT", image:"\Assets\FallRegular3Mon.png", gamemode: "Event Ainz" ,y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1CjwD8hzDjRg3XnlXsaO92sheEwCl53Uw", discordLink: "https://discord.com/channels/1309512479386243072/1449833858324369409"},
-    { name: "Fall Infinite (FunnyValentine)", image:"\Assets\FallInfValentine.png",  gamemode: "Infinite" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1NY0VkL62fLoUyXk7Vs8Tq0SGm4NcI2FN", discordLink:"https://discord.com/channels/1309512479386243072/1458687130623541248"}
+    { name: "Fall Infinite (FunnyValentine)", image:"\Assets\FallInfValentine.png",  gamemode: "Infinite" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1NY0VkL62fLoUyXk7Vs8Tq0SGm4NcI2FN", discordLink:"https://discord.com/channels/1309512479386243072/1458687130623541248"},
+    { name: "Solo Escanor HAPPY Factory(Soui) ~6:30 CT" , image: "\Assets\EscanorAllRifts.png" , gamemode: "Raid" , y_start: 80, x_col: 2, downloadLink: "https://drive.google.com/uc?export=download&id=1sY24zsfGh_Go3hNsELU8h-vL7NVz0JEt", discordLink:""}
 ]
 X_COL1_TEXT := 30
 X_COL1_BUTTONS := 450
