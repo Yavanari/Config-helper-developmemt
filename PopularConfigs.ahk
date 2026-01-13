@@ -1,9 +1,11 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 #Include ConfigHelper.ahk
-#Include AntiGreenieProtection.ahk
 UpdateColors()
 ; Data for popular configs
+PopularConfigGuiShow(*)
+{
+global PopularConfigGui := Gui("-Caption")
 global ConfigData := [
     { name: "Anni act 9(Cheez) 2:00 CT", image: "\Assets\CheezAct9.png", gamemode: "Event Anni" , y_start: 80,  x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1vejTGJpCf70PB5AgC3bEBwVQxGo_ueu8", discordLink: "https://discord.com/channels/1309512479386243072/1436697408582189128" },
     { name: "Escanor All Rifts(Hiccup) NO ONE PIECE RIFT", image: "\Assets\EscanorAllRifts.png", gamemode: "Rift" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1Li-uKHP29GjytDeZJHbl8KRA9_A_Jc4q", discordLink: "https://discord.com/channels/1309512479386243072/1438337915645333604" },
@@ -18,7 +20,8 @@ global ConfigData := [
     { name: "Fall Infinite (Kxizen)", image:"\Assets\FallInfKxizen.png",  gamemode: "Infinite" , y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1OJlvUCkE-Xjm4MCeNmY1edkG7zDCqzoZ", discordLink: "https://discord.com/channels/1309512479386243072/1448913041638035576"},
     { name: "Fall Regular 3 Monarchs (Hiccup) 9:00 CT", image:"\Assets\FallRegular3Mon.png", gamemode: "Event Ainz" ,y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1CjwD8hzDjRg3XnlXsaO92sheEwCl53Uw", discordLink: "https://discord.com/channels/1309512479386243072/1449833858324369409"},
     { name: "Fall Infinite (FunnyValentine)", image:"\Assets\FallInfValentine.png",  gamemode: "Infinite" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1NY0VkL62fLoUyXk7Vs8Tq0SGm4NcI2FN", discordLink:"https://discord.com/channels/1309512479386243072/1458687130623541248"},
-    { name: "Solo Escanor HAPPY Factory(Soui) ~6:30 CT" , image: "\Assets\EscanorAllRifts.png" , gamemode: "Raid" , y_start: 80, x_col: 2, downloadLink: "https://drive.google.com/uc?export=download&id=1sY24zsfGh_Go3hNsELU8h-vL7NVz0JEt", discordLink:""}
+    { name: "Solo Escanor HAPPY Factory(Soui) ~6:30 CT" , image: "\Assets\EscanorAllRifts.png" , gamemode: "Raid" , y_start: 80, x_col: 2, downloadLink: "https://drive.google.com/uc?export=download&id=1sY24zsfGh_Go3hNsELU8h-vL7NVz0JEt", discordLink:""},
+    { name: "Frozen Port wave 20 reset(Alligator) ~12:00" , image:"\Assets\MeriConfig.png", gamemode: "Frozen Port" , y_start: 80 , x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=179TM6I9KyNxt_WT9V7W7whdbavnI4BPI", discordLink: "https://discord.com/channels/1309512479386243072/1460623551789924535" }
 ]
 X_COL1_TEXT := 30
 X_COL1_BUTTONS := 450
@@ -28,14 +31,14 @@ X_COL2_BUTTONS := 1030
 X_COL3_BUTTONS := 1610
 BUTTON_WIDTH := 130
 PIC_HEIGHT := 90
-PopularConfigGui := Gui("-Caption")
+
 PopularConfigGui.BackColor := BackgroundColor
 PopularConfigGui.SetFont("cffffff s15", "Arial")
-TabCtrl := PopularConfigGui.Add("Tab3", "w1170 h530 +Border +Multi", ["Rift", "Raid" ,"Dungeon","Event Anni","Event Ainz","Portals","Infinite","Merikatori aio configs"])
+TabCtrl := PopularConfigGui.Add("Tab3", "w1170 h530 +Border +Multi", ["Rift", "Raid" ,"Dungeon","Frozen port" , "Event Anni","Event Ainz","Portals","Infinite","Merikatori aio configs"])
 TabCtrl.SetFont("bold " . "c" TextColor . " s15", "Arial")
 PopularConfigGui.SetFont("bold " . "c" TextColor . " s11", "Arial")
 TabCtrl.UseTab(1)
-AutoImportCheckBox:=PopularConfigGui.AddCheckbox("x930 y500 vAutoImport" , "Auto import downloaded configs")
+global AutoImportCheckBox:=PopularConfigGui.AddCheckbox("x930 y500 vAutoImport" , "Auto import downloaded configs")
 AutoImportCheckBox.Value := 1
 AutoImport:=AutoImportCheckBox.Value
 for index, config in ConfigData 
@@ -94,7 +97,7 @@ DownloadConfigHandler(url, *)
         }
         }
         global SelectedConfigFolder:=LatestPath
-        AutoDetectRead:=FileRead(ImportConfigs . "\" . SelectedConfigFolder . "\AutoDetect.txt") 
+        global AutoDetectRead:=FileRead(ImportConfigs . "\" . SelectedConfigFolder . "\AutoDetect.txt") 
         Lines := StrSplit(AutoDetectRead, "`n", "`r") 
         global AutoGamemode:=Lines[1]
         global AutoMap:=Lines[2]
@@ -120,4 +123,6 @@ DownloadConfigHandler(url, *)
         Import()
         try DirDelete(ImportConfigs . "\" . LatestPath , 1)
     }
+}
+PopularConfigGui.Show()
 }

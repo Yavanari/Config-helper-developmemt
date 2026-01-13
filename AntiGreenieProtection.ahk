@@ -1,12 +1,14 @@
 ﻿#Requires AutoHotkey v2.0
 #SingleInstance Force
-Antigreenie()
-{
-;Checking if Import and Export Folder exist
+global ShowMsgBox:=0
 global ImportConfigs := A_ScriptDir . "\ImportConfigs"
 global ExportConfig := A_ScriptDir . "\ExportConfig"
 global ExtractedConfigs:= A_ScriptDir . "\ExtractedConfigs"
 global PathToDefaultStrategy:= ImportConfigs . "\All_Strategy.txt"
+Antigreenie(*)
+{
+;Checking if Import and Export Folder exist
+
 If !DirExist(ImportConfigs) || !DirExist(ExportConfig) || !DirExist(ExtractedConfigs)
     {
     DirCreate ImportConfigs ;Create Import folder if its not exist
@@ -34,12 +36,13 @@ if !FileExist(A_ScriptDir . "\Salmon_AV.exe")
     x.Show()
     Pause
 }
-}
 if !FileExist(A_ScriptDir . "\WinRar.exe")
 {
     MsgBox("Missing Winrar.exe`nRun UpdateHelper.ahk to download")
     ExitApp
 }
+}
+
 CreateAllFolders(*)
 {   
 AllMapsByGamemode:= Map(
@@ -59,7 +62,8 @@ For GamemodeFolders, MapsForGamemode in AllMapsByGamemode
         CreatePath:=A_ScriptDir . "\Data\Config\" . GamemodeFolders . "\" . MapFolderName
         if !DirExist(CreatePath)
         {
-            DirCreate(CreatePath) 
+            DirCreate(CreatePath)
+            global ShowMsgBox:=1
         }
     }
 }
@@ -69,9 +73,13 @@ for SubFolder in AllSubFolders
     if !DirExist(SubFolder)
     {
         DirCreate(SubFolder)
+        global ShowMsgBox:=1
     }
 }
+if (ShowMsgBox =1)
+{
 MsgBox("Created all Gamemode folders and Sub folders")
+}
 }
 UpdateColors(*)
 {

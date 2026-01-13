@@ -10,7 +10,8 @@ Antigreenie()
 UpdateColors()
 TraySetIcon (A_ScriptDir . "\Assets\TrayIcon.png")
 global ManualImportingGui := Gui("-Caption 2 ") 
-MyGui := Gui("-Caption 2 ") 
+global PopularConfigGui := Gui("-Caption")
+MyGui := Gui("-Caption 2 ")
 MyGui.BackColor := BackgroundColor
 TitleBar := MyGui.Add("Text", "w480 h30 Center Background" . BackgroundColor . " c" . TextColor, "Config Helper")
 TitleBar.SetFont("s10 Bold", "Arial")
@@ -19,7 +20,7 @@ EnableDrag(wParam, lParam, msg, hwnd)
 {
     if (hwnd = MyGui.Hwnd) or (hwnd = ManualImportingGui.Hwnd) or (hwnd = PopularConfigGui.Hwnd)
     {
-        DllCall("SendMessage", "ptr", hwnd, "uint", 0xA1, "ptr", 2, "ptr", 0)
+        try DllCall("SendMessage", "ptr", hwnd, "uint", 0xA1, "ptr", 2, "ptr", 0)
     }
 }
 CloseButton := MyGui.Add("Picture", "x460 y10 w15 h15", A_ScriptDir . "\Assets\Close.png")  
@@ -64,7 +65,7 @@ RefreshButton := MyGui.Add("Text", "x200 y54 w100 h25 Center Background" . Backg
 ;Create folders
 CreateFoldersButton:= MyGui.Add("Text", "x320 y104 w150 h35 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Manual select config txts").OnEvent("Click", ManualImportingGuiShow)
 ;Popular config button
-PopularConfigButton:=MyGui.Add("Text", "x320 y154 w150 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Popular configs" ).OnEvent("Click" , (*) => PopularConfigGui.Show())
+PopularConfigButton:=MyGui.Add("Text", "x320 y154 w150 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Popular configs" ).OnEvent("Click" , PopularConfigGuiShow)
 ;Custom GUI button
 CustomGuiButton:=MyGui.Add("Text", "x320 y194 w150 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Custom GUI colors" ).OnEvent("Click" , (*) => Run('notepad.exe "' . A_ScriptDir . '\GuiSettings.txt"'))
 ; Gamemode and maps drop down list
@@ -222,7 +223,8 @@ UnZip(*)
     for SourceRar in ListOfRarAndZipFiles
     {    
         UnrarExePath:=A_ScriptDir . "\WinRar.exe"
-        try RunWait('"' . UnrarExePath . '" x -y "' . SourceRar . '" "' . ImportConfigs .  '"')
+        RunWait('"' . UnrarExePath . '" x -y "' . SourceRar . '" "' . ImportConfigs .  '"')
+
     }
     for PathToCopyZip in ListOfRarAndZipFiles
     {
@@ -241,7 +243,7 @@ UpdateSaveFile()
 }
 Import(*)
 {
-    if (AutoImportCheckBox.Value != 1)
+    try if (AutoImportCheckBox.Value != 1)
     {
     UpdateSaveFile()
     }
@@ -436,7 +438,9 @@ DownloadConfig(*)
     global DownloadLinkManual:=LinkToConfig.Text
     If (DownloadLinkManual != "")
     {
+        MsgBox(DownloadLinkManual)
         Download(DownloadLinkManual , ImportConfigs . "\Downloaded Config.zip")
+        Pause
         UnZip()
         Sleep 400
         MsgBox("Successfully downloaded config")
@@ -475,7 +479,6 @@ DownloadConfig(*)
     }   
     else If (DownloadLinkAuto !="")
     {
-
             Download(DownloadLinkAuto , ImportConfigs . "\Downloaded Config.zip")
             Sleep 200
             UnZip()
@@ -487,7 +490,7 @@ DownloadConfig(*)
         MsgBox("Link is empty")
     }
 }
+
 CreateAllFolders()
 UpdateSaveFile()
 MyGui.Show()
-
