@@ -21,8 +21,9 @@ global ConfigData := [
     { name: "Fall Regular 3 Monarchs (Hiccup) 9:00 CT", image:"\Assets\FallRegular3Mon.png", gamemode: "Event Ainz" ,y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1CjwD8hzDjRg3XnlXsaO92sheEwCl53Uw", discordLink: "https://discord.com/channels/1309512479386243072/1449833858324369409"},
     { name: "Fall Infinite (FunnyValentine)", image:"\Assets\FallInfValentine.png",  gamemode: "Infinite" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1NY0VkL62fLoUyXk7Vs8Tq0SGm4NcI2FN", discordLink:"https://discord.com/channels/1309512479386243072/1458687130623541248"},
     { name: "Solo Escanor HAPPY Factory(Soui) ~6:30 CT" , image: "\Assets\EscanorAllRifts.png" , gamemode: "Raid" , y_start: 80, x_col: 2, downloadLink: "https://drive.google.com/uc?export=download&id=1sY24zsfGh_Go3hNsELU8h-vL7NVz0JEt", discordLink:""},
-    { name: "Frozen Port wave 20 reset(Alligator) ~12:00" , image:"\Assets\MeriConfig.png", gamemode: "Frozen Port" , y_start: 80 , x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=179TM6I9KyNxt_WT9V7W7whdbavnI4BPI", discordLink: "https://discord.com/channels/1309512479386243072/1460623551789924535" }
-]
+    { name: "Frozen Port wave 20 reset(Alligator) ~12:00 CT" , image:"\Assets\MeriConfig.png", gamemode: "Frozen Port" , y_start: 80 , x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=179TM6I9KyNxt_WT9V7W7whdbavnI4BPI", discordLink: "https://discord.com/channels/1309512479386243072/1460623551789924535" },
+    { name: "Shank's rift(Mericatori) READ INFO IN CONFIG LINK" , image: "\Assets\ShanksRiftMeri.png", gamemode: "Rift",  y_start: 220, x_col: 1, downloadlink: " https://drive.google.com/uc?export=download&id=1vSf7U661bKJLWMlMSNsf4HxN6OfieTwq" , discordlink: "https://discord.com/channels/1309512479386243072/1460690201029644394"
+    }]
 X_COL1_TEXT := 30
 X_COL1_BUTTONS := 450
 X_COL2_TEXT := 600
