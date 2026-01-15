@@ -15,7 +15,7 @@ global ConfigData := [
     { name: "Dio OH Cid Act 2 (Hiccup) 8:00 CT", image: "\Assets\DIoCidAct2.png",  gamemode: "Raid" ,y_start: 220,  x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1apsf_8bUn2yehHc3eY6SzqNfHoUVykEp", discordLink: "https://discord.com/channels/1309512479386243072/1445911411279794297" },
     { name: "Sasuke Cid Act 2 (Gnoemy) ~3:00 CT",   image: "\Assets\CidSasuke.png",  gamemode: "Raid" ,y_start: 360, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1b4rAeBbw-PoRQaOLrmi_8qkpCbAdvncl", discordLink: "https://discord.com/channels/1309512479386243072/1444442525359276192" },
     { name: "Frozen Volcano Freeza",   image: "\Assets\FreezaFrozenVolcano.png",   gamemode: "Dungeon" ,y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1reMrrVfvRWgFFxmi7tV9YF8dw_rbc9rv", discordLink: "https://discord.com/channels/1309512479386243072/1374915274855284798" },
-    { name: "Merikatori P2W config", image:"\Assets\MeriConfig.png", gamemode: "All" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1xY14y9xfrTQJbZPx5C-g3Jh-qJ3f2NnP", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
+    { name: "Merikatori P2W config", image:"\Assets\MeriConfig.png", gamemode: "All" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1g3B_mKu_MXAz3_GEWGbBkh6CbYL2GOq2", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
     { name: "Merikatori F2P config", image:"\Assets\MeriConfig.png", gamemode: "All", y_start: 80, x_col: 2, downloadLink: "https://drive.google.com/uc?export=download&id=1z7nfHRuxSQJ0lUfdptlKKv-3bQDTHZ0C", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
     { name: "Fall Infinite (Kxizen)", image:"\Assets\FallInfKxizen.png",  gamemode: "Infinite" , y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1OJlvUCkE-Xjm4MCeNmY1edkG7zDCqzoZ", discordLink: "https://discord.com/channels/1309512479386243072/1448913041638035576"},
     { name: "Fall Regular 3 Monarchs (Hiccup) 9:00 CT", image:"\Assets\FallRegular3Mon.png", gamemode: "Event Ainz" ,y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1CjwD8hzDjRg3XnlXsaO92sheEwCl53Uw", discordLink: "https://discord.com/channels/1309512479386243072/1449833858324369409"},
@@ -85,7 +85,7 @@ DownloadConfigHandler(url, *)
 {
     global DownloadLinkAuto := url 
     DownloadConfig()
-    if (AutoImportCheckBox.Value = 1)
+    if (AutoImportCheckBox.Value = 1 ) && (DownloadLinkAuto != "https://drive.google.com/uc?export=download&id=1g3B_mKu_MXAz3_GEWGbBkh6CbYL2GOq2") && (DownloadLinkAuto !="https://drive.google.com/uc?export=download&id=1z7nfHRuxSQJ0lUfdptlKKv-3bQDTHZ0C")
     {
         LatestPath := ""
         LatestTime := 0

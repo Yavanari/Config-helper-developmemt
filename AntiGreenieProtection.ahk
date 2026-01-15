@@ -51,7 +51,7 @@ AllMapsByGamemode:= Map(
     "Event", ["Burning_Spirit_Tree", "Crystal_Chapel", "Double_Dungeon", "Golden_Castle", "Kuinshi_Palace", "Old_Lobby", "Old_Namek", "Shining_Castle", "The_Land_of_Gods" , "Lich_Kings_Throne" , "Frozen_Port"],
     "Dungeon", ["Jeju_island", "Frozen_Volcano"],
     "Portals", ["Sun_Temple", "Lich_Kings_Throne"],
-    "Boss Rush", ["Rumbling_Event", "Dark_Tainted_Tyrant", "Blood_Red_Chamber", "Shibuya_Aftermath"],
+    "BossRush", ["Rumbling_Event", "Dark_Tainted_Tyrant", "Blood_Red_Chamber", "Shibuya_Aftermath"],
     "Legend Stage", ["Crystal_Chapel", "Shining_Castle" , "Imprisoned_Island" , "Burning_Spirit_Tree"],
     "Infinite" , ["Lich_Kings_Throne"]
 )

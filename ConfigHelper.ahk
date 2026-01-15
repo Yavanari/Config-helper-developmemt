@@ -31,7 +31,7 @@ MyGui.SetFont("bold " . "c" TextColor . " s9", "Arial")
 ListOfMountsImport:=[]
 global ImportingTeam :=""
 MyGui.Add("Text", "x20 y84", "Gamemode:",)
-Gamemode := MyGui.AddComboBox("vGamemode w130 Background" . BackgroundColor , ["Rift", "Raid", "Dungeon", "Event", "Portals", "Boss Rush", "Legend Stage" , "Infinite"]) ; Drop down menu to choose gamemode
+Gamemode := MyGui.AddComboBox("vGamemode w130 Background" . BackgroundColor , ["Rift", "Raid", "Dungeon", "Event", "Portals", "BossRush", "LegendStage" , "Infinite"]) ; Drop down menu to choose gamemode
 MyGui.Add("Text", "x20 y184", "Team: ")
 Team:=MyGui.AddDropDownList("vTeam w130 Background" . BackgroundColor . " c" . TextColor,["Team1", "Team2", "Team3", "Team4", "Team5", "Team6", "Team7", "Team8",]) ; Drop down menu to choose team
 MyGui.Add("Text", "x20 y134", "Map: ")
@@ -44,7 +44,7 @@ ListOfFoundedConfigs := MyGui.Add("ListBox", " x20 y330 w200 h150 Background" . 
 ListOfExtractedConfigs := MyGui.Add("ListBox", " x250 y330 w200 h150 Background" . BackgroundColor . " c" . TextColor)
 MyGui.Add("Text", "x10 y470", " `n Made by: FunnyValentine `n Original idea: Salmon `n Tested By: Hiccup , Zad , Gnoemy, Royam") ;Credits
 MyGui.Add("Text", "x300 y34", "Controls")
-MyGui.Add("Text", "x415 y510", "Version 1.8f")
+MyGui.Add("Text", "x415 y510", "Version 1.8g")
 ;Download with discord Button
 LinkToConfig:=MyGui.AddEdit("x20 y280 w300 Background" . BackgroundColor . " c" . TextColor)
 MyGui.AddText("x20 y260", "Download config with direct link")
@@ -68,6 +68,8 @@ CreateFoldersButton:= MyGui.Add("Text", "x320 y104 w150 h35 Center Background" .
 PopularConfigButton:=MyGui.Add("Text", "x320 y154 w150 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Popular configs" ).OnEvent("Click" , PopularConfigGuiShow)
 ;Custom GUI button
 CustomGuiButton:=MyGui.Add("Text", "x320 y194 w150 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Custom GUI colors" ).OnEvent("Click" , (*) => Run('notepad.exe "' . A_ScriptDir . '\GuiSettings.txt"'))
+;Update helper
+UpdateHelperButton:=MyGui.Add("Text", "x320 y233 w150 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "UpdateHelper" ).OnEvent("Click" , (*) => Run(A_ScriptDir . "\UpdateHelper.ahk"))
 ; Gamemode and maps drop down list
 MapsAndActs.OnEvent("Change", UpdateSaveFile)
 Gamemode.OnEvent("Change", MapList)
@@ -443,7 +445,7 @@ DownloadConfig(*)
         Sleep 400
         MsgBox("Successfully downloaded config")
     }
-    else if (DownloadLinkAuto = "https://drive.google.com/uc?export=download&id=1xY14y9xfrTQJbZPx5C-g3Jh-qJ3f2NnP")
+    else if (DownloadLinkAuto = "https://drive.google.com/uc?export=download&id=1g3B_mKu_MXAz3_GEWGbBkh6CbYL2GOq2")
     {
         if MsgBox("This will automatically apply config. `nYOUR DATA/CONFIGS WILL BE REPLACED. `nPls make backup if you dont want to loose it`n`nDo you want to continue?",, "YesNo") = "Yes"
         {
@@ -456,7 +458,7 @@ DownloadConfig(*)
                 DirMove A_LoopFileFullPath , A_ScriptDir . "\Data\Config" , 1
             }
             MsgBox("Successfully imported config")
-            DirDelete ImportConfigs . "\P2W Meri" , true
+            DirDelete ImportConfigs . "\P2W Meri" , 1
         }
     }
     else if (DownloadLinkAuto = "https://drive.google.com/uc?export=download&id=1z7nfHRuxSQJ0lUfdptlKKv-3bQDTHZ0C")
@@ -472,7 +474,7 @@ DownloadConfig(*)
                 DirMove A_LoopFileFullPath , A_ScriptDir . "\Data\Config" , 1
             }
             MsgBox("Successfully imported config")
-            DirDelete ImportConfigs . "\F2P Meri" , true
+            DirDelete ImportConfigs . "\F2P Meri" , 1
         }      
     }   
     else If (DownloadLinkAuto !="")
