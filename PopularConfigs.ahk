@@ -15,15 +15,17 @@ global ConfigData := [
     { name: "Dio OH Cid Act 2 (Hiccup) 8:00 CT", image: "\Assets\DIoCidAct2.png",  gamemode: "Raid" ,y_start: 220,  x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1apsf_8bUn2yehHc3eY6SzqNfHoUVykEp", discordLink: "https://discord.com/channels/1309512479386243072/1445911411279794297" },
     { name: "Sasuke Cid Act 2 (Gnoemy) ~3:00 CT",   image: "\Assets\CidSasuke.png",  gamemode: "Raid" ,y_start: 360, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1b4rAeBbw-PoRQaOLrmi_8qkpCbAdvncl", discordLink: "https://discord.com/channels/1309512479386243072/1444442525359276192" },
     { name: "Frozen Volcano Freeza",   image: "\Assets\FreezaFrozenVolcano.png",   gamemode: "Dungeon" ,y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1reMrrVfvRWgFFxmi7tV9YF8dw_rbc9rv", discordLink: "https://discord.com/channels/1309512479386243072/1374915274855284798" },
-    { name: "Merikatori P2W config", image:"\Assets\MeriConfig.png", gamemode: "All" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1g3B_mKu_MXAz3_GEWGbBkh6CbYL2GOq2", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
+    { name: "Merikatori P2W config", image:"\Assets\MeriConfig.png", gamemode: "All" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1-f7dQKIrmerFGAK8LQQYqGhTwTyfmrk0", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
     { name: "Merikatori F2P config", image:"\Assets\MeriConfig.png", gamemode: "All", y_start: 80, x_col: 2, downloadLink: "https://drive.google.com/uc?export=download&id=1z7nfHRuxSQJ0lUfdptlKKv-3bQDTHZ0C", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
     { name: "Fall Infinite (Kxizen)", image:"\Assets\FallInfKxizen.png",  gamemode: "Infinite" , y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1OJlvUCkE-Xjm4MCeNmY1edkG7zDCqzoZ", discordLink: "https://discord.com/channels/1309512479386243072/1448913041638035576"},
     { name: "Fall Regular 3 Monarchs (Hiccup) 9:00 CT", image:"\Assets\FallRegular3Mon.png", gamemode: "Event Ainz" ,y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1CjwD8hzDjRg3XnlXsaO92sheEwCl53Uw", discordLink: "https://discord.com/channels/1309512479386243072/1449833858324369409"},
     { name: "Fall Infinite (FunnyValentine)", image:"\Assets\FallInfValentine.png",  gamemode: "Infinite" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1NY0VkL62fLoUyXk7Vs8Tq0SGm4NcI2FN", discordLink:"https://discord.com/channels/1309512479386243072/1458687130623541248"},
     { name: "Solo Escanor HAPPY Factory(Soui) ~6:30 CT" , image: "\Assets\EscanorAllRifts.png" , gamemode: "Raid" , y_start: 80, x_col: 2, downloadLink: "https://drive.google.com/uc?export=download&id=1sY24zsfGh_Go3hNsELU8h-vL7NVz0JEt", discordLink:""},
     { name: "Frozen Port wave 20 reset(Alligator) ~12:00 CT" , image:"\Assets\MeriConfig.png", gamemode: "Frozen Port" , y_start: 80 , x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=179TM6I9KyNxt_WT9V7W7whdbavnI4BPI", discordLink: "https://discord.com/channels/1309512479386243072/1460623551789924535" },
-    { name: "Shank's rift(Mericatori) READ INFO IN CONFIG LINK" , image: "\Assets\ShanksRiftMeri.png", gamemode: "Rift",  y_start: 220, x_col: 1, downloadlink: " https://drive.google.com/uc?export=download&id=1vSf7U661bKJLWMlMSNsf4HxN6OfieTwq" , discordlink: "https://discord.com/channels/1309512479386243072/1460690201029644394"
-    }]
+    { name: "Shank's rift(Mericatori) READ INFO IN CONFIG LINK" , image: "\Assets\ShanksRiftMeri.png", gamemode: "Rift",  y_start: 220, x_col: 1, downloadlink: " https://drive.google.com/uc?export=download&id=1vSf7U661bKJLWMlMSNsf4HxN6OfieTwq" , discordlink: "https://discord.com/channels/1309512479386243072/1460690201029644394"},
+    { name: "One piece rift Uma(Mericatori)" , image: "\Assets\RiftUmaMeri.png" , gamemode: "Rift" , y_start: 360 , x_col: 1 , downloadLink: "https://drive.google.com/uc?export=download&id=1WrQoBeo812BZRmLaZt6mS4fRdd3Pa7N6" , discordLink: "https://discord.com/channels/1309512479386243072/1461428543220088968"}
+
+]
 X_COL1_TEXT := 30
 X_COL1_BUTTONS := 450
 X_COL2_TEXT := 600
@@ -85,7 +87,7 @@ DownloadConfigHandler(url, *)
 {
     global DownloadLinkAuto := url 
     DownloadConfig()
-    if (AutoImportCheckBox.Value = 1 ) && (DownloadLinkAuto != "https://drive.google.com/uc?export=download&id=1g3B_mKu_MXAz3_GEWGbBkh6CbYL2GOq2") && (DownloadLinkAuto !="https://drive.google.com/uc?export=download&id=1z7nfHRuxSQJ0lUfdptlKKv-3bQDTHZ0C")
+    if (AutoImportCheckBox.Value = 1 ) && (DownloadLinkAuto != "https://drive.google.com/uc?export=download&id=1-f7dQKIrmerFGAK8LQQYqGhTwTyfmrk0") && (DownloadLinkAuto !="https://drive.google.com/uc?export=download&id=1z7nfHRuxSQJ0lUfdptlKKv-3bQDTHZ0C")
     {
         LatestPath := ""
         LatestTime := 0
@@ -111,7 +113,7 @@ DownloadConfigHandler(url, *)
         v.BackColor:= BackgroundColor
         v.AddText("X10 y10 Center c" . TextColor , "Select Team")
         TeamAuto:=v.AddDropDownList("vTeamAuto w130 Background" . BackgroundColor . " c" . TextColor,["Team1", "Team2", "Team3", "Team4", "Team5", "Team6", "Team7", "Team8",])
-        ImportTeamButton:=v.Add("Text", "x45 y70 w70 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Import").OnEvent("Click" , (*) => Pause(0))
+        ImportTeamButton:=v.Add("Text", "x45 y80 w70 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Import").OnEvent("Click" , (*) => Pause(0))
         v.Show()
         Pause
         global SelectedTeam:=TeamAuto.Text

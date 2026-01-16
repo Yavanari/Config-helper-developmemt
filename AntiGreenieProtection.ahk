@@ -21,7 +21,7 @@ loop files, A_ScriptDir . "\Assets\*" , "F"
 {
     AmountOfAssets++
 }
-if (AmountOfAssets<17)
+if (AmountOfAssets<19)
 {
     MsgBox("Missing files in Assets folder `nRun updatehelper.ahk to download them")
     ExitApp()        
@@ -52,7 +52,7 @@ AllMapsByGamemode:= Map(
     "Dungeon", ["Jeju_island", "Frozen_Volcano"],
     "Portals", ["Sun_Temple", "Lich_Kings_Throne"],
     "BossRush", ["Rumbling_Event", "Dark_Tainted_Tyrant", "Blood_Red_Chamber", "Shibuya_Aftermath"],
-    "Legend Stage", ["Crystal_Chapel", "Shining_Castle" , "Imprisoned_Island" , "Burning_Spirit_Tree"],
+    "LegendStage", ["Crystal_Chapel", "Shining_Castle" , "Imprisoned_Island" , "Burning_Spirit_Tree"],
     "Infinite" , ["Lich_Kings_Throne"]
 )
 For GamemodeFolders, MapsForGamemode in AllMapsByGamemode
