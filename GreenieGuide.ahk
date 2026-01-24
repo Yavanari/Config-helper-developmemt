@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
 #Include AntiGreenieProtection.ahk
 #Include ConfigHelper.ahk
+global confirmImprot:=0
 global GuideGui:=Gui("-Caption 2")
 GuideGui.SetFont("bold " . "c" TextColor . " s11", "Arial")
 GuideGui.BackColor := BackgroundColor
@@ -13,6 +14,7 @@ ExportGuide:=GuideGui.AddText("x260 y150 w150 h30 Center Background" . Backgroun
 ReadButton:=GuideGui.AddText("x160 y200 w150 h60 Center Background" . BackgroundColor . " c" . TextColor " +Border", "I've read guides`nAnd wont ask dumb questions").OnEvent("Click" , ImNotDumb)
 ImportGuideGuiShow(*)
 {
+    global confirmImprot:=1
     GuideGui.Hide()
     global ImportGuideGui:=Gui("-Caption 2")
     ImportGuideGui.BackColor := BackgroundColor
@@ -36,8 +38,7 @@ ImportGuideGuiShow(*)
     CloseButton:=ImportGuideGui.AddText("x975 y500 w200 h30 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Close").OnEvent("Click",Close)
     Text2:=
     (
-        "Other ways
-Go to custom-configs in salmon server and download a custom config (only v2.0 configs work and if they were made with helper)
+        "Go to custom-configs in salmon server and download a custom config (only v2.0 configs work and if they were made with helper)
 Copy the (.rar or .zip) file into the newly made ImportConfigs folder
 Click Extract All Configs button(All Zip, Rar will be moved to ExtractedZIP folder)
 Select Extracted config folder in config folder menu to search configs only in this folder`nYOU MUST SELECT NEW CONFIG FOLDER AND NOT DEFAULT
@@ -82,10 +83,17 @@ Exported config will be saved in ExportConfig folder"
 }
 ImNotDumb(*)
 {
+    if (confirmImprot = 1)
+    {
     Pause(0)
     FileCords := FileOpen(A_ScriptDir . "\ImNotDumb.txt", "w")
     FileCords.Write("Confirm that you have read both guide for impoting and exporting and you wont ask dumb questions")
     FileCords.Close()
+    }
+    else
+    {
+        MsgBox("Go read guides buddy")
+    }
 }
 Close(*)
 {

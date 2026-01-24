@@ -5,12 +5,12 @@
 #Include ManualImporting.ahk
 #Include PopularConfigs.ahk
 #Include GreenieGuide.ahk
+global AutoImport:=0
 global AutoMap:=""
-global AutoGamemode:=""
+global AutoGamemode:="" 
 ;ADD "AntiGreenie" FUNCTION HERE B4 RELEASING
 Antigreenie()
 UpdateColors()
-TraySetIcon (A_ScriptDir . "\Assets\TrayIcon.png")
 global ManualImportingGui := Gui("-Caption 2 ") 
 global PopularConfigGui := Gui("-Caption 2")
 MyGui := Gui("-Caption 2 ")
@@ -247,14 +247,14 @@ UpdateSaveFile()
 }
 Import(*)
 {
-    if (AutoImportCheckBox.Value != 1)
+    if (AutoImport != 1)
     {
     UpdateSaveFile()
     }
     if (AutoGamemode = "RiftAll") and (AutoMap = "RiftAll")
     {
-        DirMove ImportConfigs . "\Escanor_All_Rifts\Rift" , A_ScriptDir . "\Data\Config" , 1
-        FileMove ImportConfigs . "\Escanor_All_Rifts\Team\Team6.txt", A_ScriptDir . "\Data\Config\Team\" . SelectedTeam . ".txt" , 1
+        DirCopy ImportConfigs . "\Escanor_All_Rifts\Rift" , A_ScriptDir . "\Data\Config" , 1
+        FileCopy ImportConfigs . "\Escanor_All_Rifts\Team\Team6.txt", A_ScriptDir . "\Data\Config\Team\" . SelectedTeam . ".txt" , 1
         MsgBox("Successfully imported")
         MapsAndActs.Delete()
         Gamemode.Delete()
@@ -269,15 +269,15 @@ Import(*)
     {
         for PathToCopyConfig in ListOfConfigs
         {
-            try FileMove PathToCopyConfig , A_ScriptDir . "\Data\Config\" . SelectedModeSearch . "\" . SelectedMapSearch , 1
-            try FileMove ImportingTeam , A_ScriptDir . "\Data\Config\Team\" . SelectedTeam . ".txt" , 1 
+            try FileCopy PathToCopyConfig , A_ScriptDir . "\Data\Config\" . SelectedModeSearch . "\" . SelectedMapSearch , 1
+            try FileCopy ImportingTeam , A_ScriptDir . "\Data\Config\Team\" . SelectedTeam . ".txt" , 1 
         }
   
         if FileExist(ImportConfigs . "\" . SelectedConfigFolder . "\Config.txt")
         {
             if MsgBox("Do you want to import Config.txt (modifiers)?",, "YesNo") = "Yes"
             {
-                FileMove ImportConfigs . "\" . SelectedConfigFolder . "\Config.txt" , A_ScriptDir . "\Data\Config\"  . SelectedModeSearch 
+                FileCopy ImportConfigs . "\" . SelectedConfigFolder . "\Config.txt" , A_ScriptDir . "\Data\Config\"  . SelectedModeSearch , 1
             }
             else
             {
@@ -288,7 +288,7 @@ Import(*)
         {
             loop files , ImportConfigs . "\" . SelectedConfigFolder . "\Unit_Ability\*.txt"
             {
-                FileMove A_LoopFileFullPath , A_ScriptDir . "\Data\Config\Unit_Ability" , 1
+                FileCopy A_LoopFileFullPath , A_ScriptDir . "\Data\Config\Unit_Ability" , 1
             } 
         }
         MsgBox("Successfully imported")
@@ -305,8 +305,6 @@ Import(*)
         }
     }
 global ListOfConfigs:=[]
-try FileDelete ImportConfigs . "\" . SelectedConfigFolder . "\AutoDetect.txt"
-DeleteFolderIfNoTxt()
 UpdateSaveFile()
 }
 Export(*)
@@ -416,26 +414,6 @@ ImportMountForCid(*)
         try FileMove ImportConfigs . "\" . SelectedConfigFolder . "\Mount\"  , A_ScriptDir . "\Data\Roblox\Mount" , 1
         MsgBox("Successfully imported all mounts")
     }
-}
-DeleteFolderIfNoTxt(*)
-{
-    UpdateSaveFile()
-    IsConfigFolderEmpty:=""
-    loop files, PathToDeleteFodler . "\*.txt" , "RF"
-    {
-        IsConfigFolderEmpty:=A_LoopFileName
-        break
-    }
-    if (IsConfigFolderEmpty = "")
-    {
-        if (PathToDeleteFodler != A_ScriptDir . "\ImportConfigs\")
-        {
-        try DirDelete(PathToDeleteFodler , 1)
-        Gamemode.Delete()
-        MapsAndActs.Delete()
-        Team.Delete()
-        }
-    } 
 }
 DownloadConfig(*)
 {

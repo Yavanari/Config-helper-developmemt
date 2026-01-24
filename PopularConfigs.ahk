@@ -43,7 +43,7 @@ PopularConfigGui.SetFont("bold " . "c" TextColor . " s11", "Arial")
 TabCtrl.UseTab(1)
 global AutoImportCheckBox:=PopularConfigGui.AddCheckbox("x930 y500 vAutoImport" , "Auto import downloaded configs")
 AutoImportCheckBox.Value := 1
-AutoImport:=AutoImportCheckBox.Value
+global AutoImport:=AutoImportCheckBox.Value
 for index, config in ConfigData 
 {
     if config.HasOwnProp("gamemode") and (config.gamemode != "All")
