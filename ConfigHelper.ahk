@@ -1,8 +1,10 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
+#NoTrayIcon
 #Include AntiGreenieProtection.ahk
 #Include ManualImporting.ahk
 #Include PopularConfigs.ahk
+#Include GreenieGuide.ahk
 global AutoMap:=""
 global AutoGamemode:=""
 ;ADD "AntiGreenie" FUNCTION HERE B4 RELEASING
@@ -10,7 +12,7 @@ Antigreenie()
 UpdateColors()
 TraySetIcon (A_ScriptDir . "\Assets\TrayIcon.png")
 global ManualImportingGui := Gui("-Caption 2 ") 
-global PopularConfigGui := Gui("-Caption")
+global PopularConfigGui := Gui("-Caption 2")
 MyGui := Gui("-Caption 2 ")
 MyGui.BackColor := BackgroundColor
 TitleBar := MyGui.Add("Text", "w480 h30 Center Background" . BackgroundColor . " c" . TextColor, "Config Helper")
@@ -18,7 +20,7 @@ TitleBar.SetFont("s10 Bold", "Arial")
 OnMessage(0x201, EnableDrag)
 EnableDrag(wParam, lParam, msg, hwnd)
 {
-    if (hwnd = MyGui.Hwnd) or (hwnd = ManualImportingGui.Hwnd) or (hwnd = PopularConfigGui.Hwnd)
+    try if (hwnd = MyGui.Hwnd) or (hwnd = ManualImportingGui.Hwnd) or (hwnd = PopularConfigGui.Hwnd) or (hwnd = GuideGui.Hwnd) or (hwnd=ImportGuideGui.Hwnd) or (hwnd=ExportGuideGui.Hwnd)
     {
         try DllCall("SendMessage", "ptr", hwnd, "uint", 0xA1, "ptr", 2, "ptr", 0)
     }
@@ -44,7 +46,7 @@ ListOfFoundedConfigs := MyGui.Add("ListBox", " x20 y330 w200 h150 Background" . 
 ListOfExtractedConfigs := MyGui.Add("ListBox", " x250 y330 w200 h150 Background" . BackgroundColor . " c" . TextColor)
 MyGui.Add("Text", "x10 y470", " `n Made by: FunnyValentine `n Original idea: Salmon `n Tested By: Hiccup , Zad , Gnoemy, Royam") ;Credits
 MyGui.Add("Text", "x300 y34", "Controls")
-MyGui.Add("Text", "x415 y510", "Version 1.8H")
+MyGui.Add("Text", "x415 y510", "Version 1.9")
 ;Download with discord Button
 LinkToConfig:=MyGui.AddEdit("x20 y280 w300 Background" . BackgroundColor . " c" . TextColor)
 MyGui.AddText("x20 y260", "Download config with direct link")
@@ -131,7 +133,7 @@ SearchConfigs(*)
         global ConfigMap:=Lines[2]
         Gamemode.Text:=ConfigGamemode
         MapList()
-        try MapsAndActs.Text:=ConfigMap
+        MapsAndActs.Text:=ConfigMap
     } 
     SelectedMapSearch := MapsAndActs.Text
     global ListOfConfigs := []
@@ -199,7 +201,7 @@ DefultStrategyFunction(*)
     }
     else
     {
-    try FileCopy PathToDefaultStrategy , A_ScriptDir . "\Data\Config\Default\All" , 1
+    FileCopy PathToDefaultStrategy , A_ScriptDir . "\Data\Config\Default\All" , 1
     MsgBox("Successfully imported default strategy")
     }
 }
@@ -245,7 +247,7 @@ UpdateSaveFile()
 }
 Import(*)
 {
-    try if (AutoImportCheckBox.Value != 1)
+    if (AutoImportCheckBox.Value != 1)
     {
     UpdateSaveFile()
     }
@@ -275,7 +277,7 @@ Import(*)
         {
             if MsgBox("Do you want to import Config.txt (modifiers)?",, "YesNo") = "Yes"
             {
-            try FileMove ImportConfigs . "\" . SelectedConfigFolder . "\Config.txt" , A_ScriptDir . "\Data\Config\"  . SelectedModeSearch 
+                FileMove ImportConfigs . "\" . SelectedConfigFolder . "\Config.txt" , A_ScriptDir . "\Data\Config\"  . SelectedModeSearch 
             }
             else
             {
@@ -438,7 +440,11 @@ DeleteFolderIfNoTxt(*)
 DownloadConfig(*)
 {
     global DownloadLinkManual:=LinkToConfig.Text
-    If (DownloadLinkManual != "")
+    if (DownloadLinkManual = "") && (DownloadLinkAuto = "")
+    {
+        MsgBox("Link is empty")
+    }
+    else If (DownloadLinkManual != "")
     {
         Download(DownloadLinkManual , ImportConfigs . "\Downloaded Config.zip")
         UnZip()
@@ -485,12 +491,6 @@ DownloadConfig(*)
             Sleep 400
             MsgBox("Successfully downloaded config")
     }
-    else
-    {
-        MsgBox("Link is empty")
-    }
 }
-
-CreateAllFolders()
 UpdateSaveFile()
 MyGui.Show()

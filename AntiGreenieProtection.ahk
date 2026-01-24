@@ -21,7 +21,7 @@ loop files, A_ScriptDir . "\Assets\*" , "F"
 {
     AmountOfAssets++
 }
-if (AmountOfAssets<19)
+if (AmountOfAssets<20)
 {
     MsgBox("Missing files in Assets folder `nRun updatehelper.ahk to download them")
     ExitApp()        
@@ -41,10 +41,6 @@ if !FileExist(A_ScriptDir . "\WinRar.exe")
     MsgBox("Missing Winrar.exe`nRun UpdateHelper.ahk to download")
     ExitApp
 }
-}
-
-CreateAllFolders(*)
-{   
 AllMapsByGamemode:= Map(
     "Rift", ["Kuinshi_Palace", "Mountain_Shrine", "Underground_Church" , "Imprisoned_Island"],
     "Raid", ["Spider_Forest", "Ruined_City", "Jojo_1", "Jojo_2" , "HAPPY_Factory"],
@@ -80,12 +76,32 @@ if (ShowMsgBox =1)
 {
 MsgBox("Created all Gamemode folders and Sub folders")
 }
+if !FileExist(A_ScriptDir . "\Data\Config\Team\Team1.txt")
+{
+    fixingtext:=
+    (
+    "Unit1=|None|1|None|0|First|0|0
+    Unit2=|None|1|None|0|First|0|0
+    Unit3=|None|1|None|0|First|0|0
+    Unit4=|None|1|None|0|First|0|0 
+    Unit5=|None|1|None|0|First|0|0
+    Unit6=|None|1|None|0|First|0|0"
+    )
+    FileCords := FileOpen(A_ScriptDir . "\Data\Config\Team\Team1.txt", "w")
+    FileCords.Write(fixingtext)
+    FileCords.Close()
+    MsgBox("Fixed Cords Bug")
+}
+if !FileExist(A_ScriptDir . "\ImNotDumb.txt")
+{
+    GuideGui.Show()
+    Pause
+}
 }
 UpdateColors(*)
 {
 if !FileExist(A_ScriptDir . "\GuiSettings.txt")
 {
-
 SettingsText := 
 (
 "DO NOT DELETE THIS TEXT
@@ -99,9 +115,9 @@ Default color settings are
 1E1E1E
 009c5b"
 )
-FileObj := FileOpen(A_ScriptDir . "\GuiSettings.txt", "w")
-FileObj.Write(SettingsText)
-FileObj.Close()
+FileGui := FileOpen(A_ScriptDir . "\GuiSettings.txt", "w")
+FileGui.Write(SettingsText)
+FileGui.Close()
 }
 FileContent := FileRead(A_ScriptDir . "\GuiSettings.txt") 
 Lines := StrSplit(FileContent, "`n", "`r") 
