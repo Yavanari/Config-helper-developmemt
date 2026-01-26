@@ -1,22 +1,16 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-#NoTrayIcon
 #Include AntiGreenieProtection.ahk
 #Include ManualImporting.ahk
 #Include PopularConfigs.ahk
 #Include GreenieGuide.ahk
 global AutoImport:=0
 global AutoMap:=""
-global AutoGamemode:="" 
+global AutoGamemode:=""
+global MyGui := Gui("-Caption 2 ") 
 ;ADD "AntiGreenie" FUNCTION HERE B4 RELEASING
 Antigreenie()
 UpdateColors()
-global ManualImportingGui := Gui("-Caption 2 ") 
-global PopularConfigGui := Gui("-Caption 2")
-MyGui := Gui("-Caption 2 ")
-MyGui.BackColor := BackgroundColor
-TitleBar := MyGui.Add("Text", "w480 h30 Center Background" . BackgroundColor . " c" . TextColor, "Config Helper")
-TitleBar.SetFont("s10 Bold", "Arial")
 OnMessage(0x201, EnableDrag)
 EnableDrag(wParam, lParam, msg, hwnd)
 {
@@ -25,6 +19,11 @@ EnableDrag(wParam, lParam, msg, hwnd)
         try DllCall("SendMessage", "ptr", hwnd, "uint", 0xA1, "ptr", 2, "ptr", 0)
     }
 }
+global ManualImportingGui := Gui("-Caption 2 ") 
+global PopularConfigGui := Gui("-Caption 2")
+MyGui.BackColor := BackgroundColor
+TitleBar := MyGui.Add("Text", "w480 h30 Center Background" . BackgroundColor . " c" . TextColor, "Config Helper")
+TitleBar.SetFont("s10 Bold", "Arial")
 CloseButton := MyGui.Add("Picture", "x460 y10 w15 h15", A_ScriptDir . "\Assets\Close.png")  
 CloseButton.OnEvent("Click", (*) => ExitApp())
 MinimizeButton:=MyGui.Add("Picture", "x430 y10 w15 h15", A_ScriptDir . "\Assets\Minimize.png")
@@ -46,6 +45,7 @@ ListOfFoundedConfigs := MyGui.Add("ListBox", " x20 y330 w200 h150 Background" . 
 ListOfExtractedConfigs := MyGui.Add("ListBox", " x250 y330 w200 h150 Background" . BackgroundColor . " c" . TextColor)
 MyGui.Add("Text", "x10 y470", " `n Made by: FunnyValentine `n Original idea: Salmon `n Tested By: Hiccup , Zad , Gnoemy, Royam") ;Credits
 MyGui.Add("Text", "x300 y34", "Controls")
+MyGui.Add("Text", "x320 y510 w70 h30 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Guide").OnEvent("Click" , ReadGuideAgain)
 MyGui.Add("Text", "x415 y510", "Version 1.9")
 ;Download with discord Button
 LinkToConfig:=MyGui.AddEdit("x20 y280 w300 Background" . BackgroundColor . " c" . TextColor)
@@ -143,7 +143,6 @@ SearchConfigs(*)
     {
         if (SelectedMapSearch != "")
         {
-        ; Search for map config files
         loop files, ImportConfigs . "\" . SelectedMapSearch . "*.txt", "F"
         {
             if (A_LoopFileName = "All_Strategy.txt")
@@ -156,7 +155,6 @@ SearchConfigs(*)
                 ListOfFoundedConfigs.Add([A_LoopFileName])
             }
         }
-        ; Search for team files
         loop files, ImportConfigs . "\Team" . "*.txt", "F"
             {
             global ImportingTeam := A_LoopFileFullPath
@@ -411,7 +409,7 @@ ImportMountForCid(*)
     }
     else
     {
-        try FileMove ImportConfigs . "\" . SelectedConfigFolder . "\Mount\"  , A_ScriptDir . "\Data\Roblox\Mount" , 1
+        try FileCopy ImportConfigs . "\" . SelectedConfigFolder . "\Mount\"  , A_ScriptDir . "\Data\Roblox\Mount" , 1
         MsgBox("Successfully imported all mounts")
     }
 }
@@ -472,3 +470,4 @@ DownloadConfig(*)
 }
 UpdateSaveFile()
 MyGui.Show()
+

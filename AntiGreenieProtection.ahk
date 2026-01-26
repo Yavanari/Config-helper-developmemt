@@ -76,6 +76,11 @@ if (ShowMsgBox =1)
 {
 MsgBox("Created all Gamemode folders and Sub folders")
 }
+if !FileExist(A_ScriptDir . "\ImNotDumb.txt")
+{
+    SelectLangGui.Show()
+    Pause  
+}       
 if !FileExist(A_ScriptDir . "\Data\Config\Team\Team1.txt")
 {
     fixingtext:=
@@ -91,11 +96,6 @@ if !FileExist(A_ScriptDir . "\Data\Config\Team\Team1.txt")
     FileCords.Write(fixingtext)
     FileCords.Close()
     MsgBox("Fixed Cords Bug")
-}
-if !FileExist(A_ScriptDir . "\ImNotDumb.txt")
-{
-    GuideGui.Show()
-    Pause
 }
 }
 UpdateColors(*)
