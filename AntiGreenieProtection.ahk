@@ -63,7 +63,7 @@ For GamemodeFolders, MapsForGamemode in AllMapsByGamemode
         }
     }
 }
-AllSubFolders:=[A_ScriptDir . "\Data\Config\Default\All" ,A_ScriptDir . "\Data\Config\Team" , A_ScriptDir . "\Data\Roblox\Mount" , A_ScriptDir . "\Data\Config\Unit_Ability" ]
+AllSubFolders:=[A_ScriptDir . "\Data\Config\Default\All" ,A_ScriptDir . "\Data\Config\Team" , A_ScriptDir . "\Data\Roblox\Mount" , A_ScriptDir . "\Data\Config\Unit_Ability" , A_ScriptDir . "\Data\Task" ]
 for SubFolder in AllSubFolders
 {
     if !DirExist(SubFolder)
@@ -92,10 +92,13 @@ if !FileExist(A_ScriptDir . "\Data\Config\Team\Team1.txt")
     Unit5=|None|1|None|0|First|0|0
     Unit6=|None|1|None|0|First|0|0"
     )
-    FileCords := FileOpen(A_ScriptDir . "\Data\Config\Team\Team1.txt", "w")
-    FileCords.Write(fixingtext)
-    FileCords.Close()
+    FileAppend(fixingtext , A_ScriptDir . "\Data\Config\Team\Team1.txt")
     MsgBox("Fixed Cords Bug")
+}
+if !FileExist(A_ScriptDir . "\Data\Task\Main.txt") or !FileExist(A_ScriptDir . "\Data\Task\Custom.txt")
+{
+    FileAppend("Rift=0`nWeekly=0`nDaily=0`nTrait=0`nOther=0`nBounty=0" , A_ScriptDir . "\Data\Task\Main.txt")
+    FileAppend("" , A_ScriptDir . "\Data\Task\Custom.txt")
 }
 }
 UpdateColors(*)
@@ -115,9 +118,7 @@ Default color settings are
 1E1E1E
 009c5b"
 )
-FileGui := FileOpen(A_ScriptDir . "\GuiSettings.txt", "w")
-FileGui.Write(SettingsText)
-FileGui.Close()
+FileAppend(SettingsText , A_ScriptDir . "\GuiSettings.txt")
 }
 FileContent := FileRead(A_ScriptDir . "\GuiSettings.txt") 
 Lines := StrSplit(FileContent, "`n", "`r") 

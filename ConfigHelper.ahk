@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
+#NoTrayIcon
 #Include AntiGreenieProtection.ahk
 #Include ManualImporting.ahk
 #Include PopularConfigs.ahk
@@ -14,9 +15,9 @@ UpdateColors()
 OnMessage(0x201, EnableDrag)
 EnableDrag(wParam, lParam, msg, hwnd)
 {
-    try if (hwnd = MyGui.Hwnd) or (hwnd = ManualImportingGui.Hwnd) or (hwnd = PopularConfigGui.Hwnd) or (hwnd = GuideGui.Hwnd) or (hwnd=ImportGuideGui.Hwnd) or (hwnd=ExportGuideGui.Hwnd)
+    if (hwnd = MyGui.Hwnd) or (hwnd = ManualImportingGui.Hwnd) or (hwnd = PopularConfigGui.Hwnd)
     {
-        try DllCall("SendMessage", "ptr", hwnd, "uint", 0xA1, "ptr", 2, "ptr", 0)
+        DllCall("SendMessage", "ptr", hwnd, "uint", 0xA1, "ptr", 2, "ptr", 0)
     }
 }
 global ManualImportingGui := Gui("-Caption 2 ") 
@@ -46,7 +47,7 @@ ListOfExtractedConfigs := MyGui.Add("ListBox", " x250 y330 w200 h150 Background"
 MyGui.Add("Text", "x10 y470", " `n Made by: FunnyValentine `n Original idea: Salmon `n Tested By: Hiccup , Zad , Gnoemy, Royam") ;Credits
 MyGui.Add("Text", "x300 y34", "Controls")
 MyGui.Add("Text", "x320 y510 w70 h30 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Guide").OnEvent("Click" , ReadGuideAgain)
-MyGui.Add("Text", "x415 y510", "Version 1.9")
+MyGui.Add("Text", "x415 y510", "Version 2.0")
 ;Download with discord Button
 LinkToConfig:=MyGui.AddEdit("x20 y280 w300 Background" . BackgroundColor . " c" . TextColor)
 MyGui.AddText("x20 y260", "Download config with direct link")
@@ -115,7 +116,6 @@ UpdateSaveFile(*)
     global SelectedConfigFolder:=ConfigFolder.Text
     global PathToDeleteFodler:= ImportConfigs  . "\" .  SelectedConfigFolder
     ConfigFolder.Delete()
-    ConfigFolder.Add(["Default"])
     loop files, ImportConfigs "\*", "D"
     {   
         ConfigFolder.Add([A_LoopFileName])
@@ -125,7 +125,7 @@ UpdateSaveFile(*)
 }
 SearchConfigs(*)
 {
-    if FileExist(ImportConfigs . "\" . SelectedConfigFolder . "\AutoDetect.txt") and (SelectedConfigFolder != "Default") and (SelectedConfigFolder != "")
+    if FileExist(ImportConfigs . "\" . SelectedConfigFolder . "\AutoDetect.txt") and (SelectedConfigFolder != "")
     { 
         FileContent := FileRead(ImportConfigs . "\" . SelectedConfigFolder . "\AutoDetect.txt")
         Lines := StrSplit(FileContent, "`n", "`r") 
@@ -139,31 +139,6 @@ SearchConfigs(*)
     global ListOfConfigs := []
     ListOfFoundedConfigs.Delete()
     targetfolder := ""
-    if (SelectedConfigFolder = "Default")
-    {
-        if (SelectedMapSearch != "")
-        {
-        loop files, ImportConfigs . "\" . SelectedMapSearch . "*.txt", "F"
-        {
-            if (A_LoopFileName = "All_Strategy.txt")
-            {
-                continue
-            }
-            else
-            {
-                ListOfConfigs.push(A_LoopFileFullPath)
-                ListOfFoundedConfigs.Add([A_LoopFileName])
-            }
-        }
-        loop files, ImportConfigs . "\Team" . "*.txt", "F"
-            {
-            global ImportingTeam := A_LoopFileFullPath
-            ListOfFoundedConfigs.Add([A_LoopFileName])
-            }
-        }
-    }   
-    else
-    {
         Loop Files, ImportConfigs "\" . SelectedConfigFolder . "\" . SelectedMapSearch . "*", "RD" 
         {
             if (A_LoopFileName = SelectedMapSearch)
@@ -189,8 +164,6 @@ SearchConfigs(*)
             ListOfFoundedConfigs.Add([A_LoopFileName])
         }
     }
-    
-}
 DefultStrategyFunction(*)
 {
     if !FileExist(PathToDefaultStrategy)
@@ -295,13 +268,8 @@ Import(*)
     {
     ImportMountForCid()
     }
-    if (SelectedConfigFolder="Default")
-    {
-        for FileConfigDelete in ListOfConfigs
-        {   
-            try FileDelete FileConfigDelete
-        }
-    }
+
+SetTask
 global ListOfConfigs:=[]
 UpdateSaveFile()
 }
@@ -377,9 +345,7 @@ Export(*)
         g.Show()
         Pause
         ConfigName:=ConfigNameEdit.Value
-        AutoDetectTxt:=FileOpen(TempDir . "\AutoDetect.txt", "w")
-        AutoDetectTxt.Write(AutoDetect)
-        AutoDetectTxt.Close()
+        FileAppend(AutoDetect , TempDir . "\AutoDetect.txt")
         DirMove TempDir , A_ScriptDir . "\TempExport\" . ConfigName , 1
         global ExportingPath:=ExportConfig . "\" . ConfigName . ".zip"
         g.Destroy()
@@ -466,6 +432,48 @@ DownloadConfig(*)
             UnZip()
             Sleep 400
             MsgBox("Successfully downloaded config")
+    }
+}
+SetTask(*)
+{
+    if MsgBox("Do you want to automatically set task for macro?`n(pls click yes if you dont know how to set task manually )",, "YesNo") = "Yes"
+    {
+    global SelectedModeSearch
+    MapTask := StrReplace(SelectedMapSearch, "_", " ")
+    TeamTask:=StrReplace(SelectedTeam, "Team" , "Team " )
+    if (SelectedModeSearch="Raid") or (SelectedModeSearch="LegendStage")
+    {
+        h:=Gui("-Caption 2")
+        h.BackColor:=BackgroundColor
+        h.SetFont("bold " . "c" TextColor . " s9", "Arial")
+        h.AddText("x10 y10 Background" . BackgroundColor . " c" . TextColor , "Choose act for task")
+        act:=h.AddDropDownList("x10 y30 Background" . BackgroundColor . " c" . TextColor ,["Act 1" ,"Act 2", "Act 3" ,"Act 4" , "Act 5" , "Act 6"])
+        btn:=h.AddText("x10 y60 w110 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Ok").OnEvent("Click" , (*)=> Pause(0))
+        h.Show
+        Pause
+        h.Hide
+        ActTask:=act.Text
+        FileDelete(A_ScriptDir . "\Data\Task\Custom.txt")
+        FileAppend(SelectedModeSearch "|99999|" MapTask "|" ActTask . "|" TeamTask  , A_ScriptDir . "\Data\Task\Custom.txt" )
+       
+    }
+    else if SelectedModeSearch="Rift"
+    {
+        EnableRift:= FileRead(A_ScriptDir . "\Data\Task\Main.txt")
+        NewContent := StrReplace(EnableRift, "Rift=0", "Rift=1")
+        FileObj := FileOpen(A_ScriptDir . "\Data\Task\Main.txt", "w")
+        FileObj.Write(NewContent)
+        FileObj.Close()
+    }
+    else if SelectedModeSearch="Event" and SelectedMapSearch="Frozen_Port"
+    {
+        FileDelete(A_ScriptDir . "\Data\Task\Custom.txt")
+        FileAppend("World Destroyer|99999|||Default Team" ,  A_ScriptDir . "\Data\Task\Custom.txt")
+    }
+    else
+    {
+        FileAppend(SelectedModeSearch "|99999|" MapTask "||" TeamTask  , A_ScriptDir . "\Data\Task\Custom.txt" )
+    }
     }
 }
 UpdateSaveFile()
