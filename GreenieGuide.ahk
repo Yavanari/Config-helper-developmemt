@@ -66,6 +66,7 @@ ExportGuideGuiShow(*)
 }
 ImNotDumb(*)
 {
+    
     if (confirmImprot = 1)
     {
     FileAppend("Confirm that you have read both guide for impoting and exporting and you wont ask dumb questions" ,A_ScriptDir . "\ImNotDumb.txt" )

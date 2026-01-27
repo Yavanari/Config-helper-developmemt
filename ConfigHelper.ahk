@@ -5,6 +5,7 @@
 #Include ManualImporting.ahk
 #Include PopularConfigs.ahk
 #Include GreenieGuide.ahk
+#Include DeepLink.ahk
 global AutoImport:=0
 global AutoMap:=""
 global AutoGamemode:=""
@@ -49,7 +50,7 @@ MyGui.Add("Text", "x300 y34", "Controls")
 MyGui.Add("Text", "x320 y510 w70 h30 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Guide").OnEvent("Click" , ReadGuideAgain)
 MyGui.Add("Text", "x415 y510", "Version 2.0")
 ;Download with discord Button
-LinkToConfig:=MyGui.AddEdit("x20 y280 w300 Background" . BackgroundColor . " c" . TextColor)
+global LinkToConfig:=MyGui.AddEdit("x20 y280 w300 Background" . BackgroundColor . " c" . TextColor)
 MyGui.AddText("x20 y260", "Download config with direct link")
 MyGui.SetFont("s10 bold")
 DownloadButton := MyGui.Add("Text", "x350 y280 w110 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Download").OnEvent("Click" , DownloadConfig)
@@ -178,21 +179,29 @@ DefultStrategyFunction(*)
 }
 UnZip(*)
 {  
+    if !(A_Args.Length > 0)
+    {  
     UpdateSaveFile()
-    ListOfRarAndZipFiles:=[]
-    ListOfExtractedConfigs.Delete()
+    }
+    ListOfRarAndZipFiles:=[] 
     Loop Files, ImportConfigs . "\*.zip", "RF" 
     {
         if !InStr(A_LoopFileAttrib, "D")
         {
+            if !(A_Args.Length > 0)
+            {
             ListOfExtractedConfigs.Add([A_LoopFileName])
+            }
             ListOfRarAndZipFiles.Push(A_LoopFileFullPath)
         }
     
     }
     Loop Files, ImportConfigs . "\*.rar", "RF"
     {
+        if !(A_Args.Length > 0)
+        {
         ListOfExtractedConfigs.Add([A_LoopFileName])
+        }
         ListOfRarAndZipFiles.Push(A_LoopFileFullPath)
     }
     for SourceRar in ListOfRarAndZipFiles
@@ -214,7 +223,10 @@ UnZip(*)
     {
         MsgBox("Extracted all Zip and Rar files")
     }
+if !(A_Args.Length > 0)
+{
 UpdateSaveFile()
+}
 }
 Import(*)
 {
@@ -381,7 +393,7 @@ ImportMountForCid(*)
 }
 DownloadConfig(*)
 {
-    global DownloadLinkManual:=LinkToConfig.Text
+    try global DownloadLinkManual:=LinkToConfig.Text
     if (DownloadLinkManual = "") && (DownloadLinkAuto = "")
     {
         MsgBox("Link is empty")
@@ -390,7 +402,6 @@ DownloadConfig(*)
     {
         Download(DownloadLinkManual , ImportConfigs . "\Downloaded Config.zip")
         UnZip()
-        Sleep 400
         MsgBox("Successfully downloaded config")
     }
     else if (DownloadLinkAuto = "https://drive.google.com/uc?export=download&id=1-f7dQKIrmerFGAK8LQQYqGhTwTyfmrk0")
@@ -398,9 +409,7 @@ DownloadConfig(*)
         if MsgBox("This will automatically apply config. `nYOUR DATA/CONFIGS WILL BE REPLACED. `nPls make backup if you dont want to loose it`n`nDo you want to continue?",, "YesNo") = "Yes"
         {
             Download(DownloadLinkAuto , ImportConfigs . "\Downloaded Config.zip")
-            Sleep 200
             UnZip()
-            Sleep 400
             loop files ImportConfigs . "\P2W Meri\*" , "D"
             {
                 DirMove A_LoopFileFullPath , A_ScriptDir . "\Data\Config" , 1
@@ -414,9 +423,7 @@ DownloadConfig(*)
         if MsgBox("This will automatically apply config. `nYOUR DATA/CONFIGS WILL BE REPLACED. `nPls make backup if you dont want to loose it`n`nDo you want to continue?",, "YesNo") = "Yes"
         {
             Download(DownloadLinkAuto , ImportConfigs . "\Downloaded Config.zip")
-            Sleep 200
             UnZip()
-            Sleep 400
             loop files ImportConfigs . "\F2P Meri\*" , "D"
             {
                 DirMove A_LoopFileFullPath , A_ScriptDir . "\Data\Config" , 1
@@ -428,9 +435,7 @@ DownloadConfig(*)
     else If (DownloadLinkAuto !="")
     {
             Download(DownloadLinkAuto , ImportConfigs . "\Downloaded Config.zip")
-            Sleep 200
             UnZip()
-            Sleep 400
             MsgBox("Successfully downloaded config")
     }
 }
@@ -478,4 +483,4 @@ SetTask(*)
 }
 UpdateSaveFile()
 MyGui.Show()
-
+DeepLink()

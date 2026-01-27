@@ -1,10 +1,16 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 #Include ConfigHelper.ahk
+#Include  DeepLink.ahk
 UpdateColors()
+UpdateVariable(*) 
+{     
+    global AutoImport := AutoImportCheckBox.Value 
+}
 ; Data for popular configs
 PopularConfigGuiShow(*)
 {
+global AutoImport:=1
 global PopularConfigGui := Gui("-Caption")
 global ConfigData := [
     { name: "Anni act 9(Cheez) 2:00 CT", image: "\Assets\CheezAct9.png", gamemode: "Event Anni" , y_start: 80,  x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1vejTGJpCf70PB5AgC3bEBwVQxGo_ueu8", discordLink: "https://discord.com/channels/1309512479386243072/1436697408582189128" },
@@ -42,8 +48,8 @@ TabCtrl.SetFont("bold " . "c" TextColor . " s15", "Arial")
 PopularConfigGui.SetFont("bold " . "c" TextColor . " s11", "Arial")
 TabCtrl.UseTab(1)
 global AutoImportCheckBox:=PopularConfigGui.AddCheckbox("x930 y500 vAutoImport" , "Auto import downloaded configs")
-AutoImportCheckBox.Value := 1
-global AutoImport:=AutoImportCheckBox.Value
+AutoImportCheckBox.Value := AutoImport
+AutoImportCheckBox.OnEvent("Click", UpdateVariable)
 for index, config in ConfigData 
 {
     if config.HasOwnProp("gamemode") and (config.gamemode != "All")
@@ -84,11 +90,13 @@ download_btn := PopularConfigGui.AddText("x" . x_buttons . " y" . y_download . "
 download_btn.OnEvent("Click", DownloadConfigHandler.Bind(config.downloadLink))
 OnMessage(0x201, EnableDrag)
 }
+PopularConfigGui.Show()
+}
 DownloadConfigHandler(url, *)
 {
     global DownloadLinkAuto := url 
     DownloadConfig()
-    if (AutoImportCheckBox.Value = 1 ) && (DownloadLinkAuto != "https://drive.google.com/uc?export=download&id=1-f7dQKIrmerFGAK8LQQYqGhTwTyfmrk0") && (DownloadLinkAuto !="https://drive.google.com/uc?export=download&id=1z7nfHRuxSQJ0lUfdptlKKv-3bQDTHZ0C")
+    if (AutoImport = 1 ) && (DownloadLinkAuto != "https://drive.google.com/uc?export=download&id=1-f7dQKIrmerFGAK8LQQYqGhTwTyfmrk0") && (DownloadLinkAuto !="https://drive.google.com/uc?export=download&id=1z7nfHRuxSQJ0lUfdptlKKv-3bQDTHZ0C") 
     {
         LatestPath := ""
         LatestTime := 0
@@ -127,6 +135,4 @@ DownloadConfigHandler(url, *)
         Import()
         try DirDelete(ImportConfigs . "\" . LatestPath , 1)
     }
-}
-PopularConfigGui.Show()
 }
