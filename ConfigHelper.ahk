@@ -1,11 +1,12 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-#NoTrayIcon
+#NoTrayIcon 
 #Include AntiGreenieProtection.ahk
 #Include ManualImporting.ahk
 #Include PopularConfigs.ahk
 #Include GreenieGuide.ahk
 #Include DeepLink.ahk
+#Include  Debug.ahk
 global AutoImport:=0
 global AutoMap:=""
 global AutoGamemode:=""
@@ -48,7 +49,7 @@ ListOfExtractedConfigs := MyGui.Add("ListBox", " x250 y330 w200 h150 Background"
 MyGui.Add("Text", "x10 y470", " `n Made by: FunnyValentine `n Original idea: Salmon `n Tested By: Hiccup , Zad , Gnoemy, Royam") ;Credits
 MyGui.Add("Text", "x300 y34", "Controls")
 MyGui.Add("Text", "x320 y510 w70 h30 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Guide").OnEvent("Click" , ReadGuideAgain)
-MyGui.Add("Text", "x415 y510", "Version 2.0")
+MyGui.Add("Text", "x415 y510", "Version 2.0a")
 ;Download with discord Button
 global LinkToConfig:=MyGui.AddEdit("x20 y280 w300 Background" . BackgroundColor . " c" . TextColor)
 MyGui.AddText("x20 y260", "Download config with direct link")
@@ -69,7 +70,7 @@ RefreshButton := MyGui.Add("Text", "x200 y54 w100 h25 Center Background" . Backg
 ;Create folders
 CreateFoldersButton:= MyGui.Add("Text", "x320 y104 w150 h35 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Manual select config txts").OnEvent("Click", ManualImportingGuiShow)
 ;Popular config button
-PopularConfigButton:=MyGui.Add("Text", "x320 y154 w150 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Popular configs" ).OnEvent("Click" , PopularConfigGuiShow)
+PopularConfigButton:=MyGui.Add("Text", "x320 y154 w150 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Popular configs" ).OnEvent("Click" , updateconfigs)
 ;Custom GUI button
 CustomGuiButton:=MyGui.Add("Text", "x320 y194 w150 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Custom GUI colors" ).OnEvent("Click" , (*) => Run('notepad.exe "' . A_ScriptDir . '\GuiSettings.txt"'))
 ;Update helper
@@ -470,16 +471,38 @@ SetTask(*)
         FileObj.Write(NewContent)
         FileObj.Close()
     }
+    else if SelectedModeSearch="Infinite" and SelectedMapSearch="Lich_Kings_Throne"
+    {
+        FileDelete(A_ScriptDir . "\Data\Task\Custom.txt")
+        FileAppend("Fall Infinite|99999|||" . TeamTask ,  A_ScriptDir . "\Data\Task\Custom.txt")       
+    }
     else if SelectedModeSearch="Event" and SelectedMapSearch="Frozen_Port"
     {
         FileDelete(A_ScriptDir . "\Data\Task\Custom.txt")
         FileAppend("World Destroyer|99999|||Default Team" ,  A_ScriptDir . "\Data\Task\Custom.txt")
+    }
+    else if SelectedModeSearch="Event" and SelectedMapSearch="Lich_Kings_Throne"
+    {
+        FileDelete(A_ScriptDir . "\Data\Task\Custom.txt")
+        FileAppend("Fall Event|0|||" . TeamTask ,  A_ScriptDir . "\Data\Task\Custom.txt")      
     }
     else
     {
         FileAppend(SelectedModeSearch "|99999|" MapTask "||" TeamTask  , A_ScriptDir . "\Data\Task\Custom.txt" )
     }
     }
+}
+updateconfigs(*)
+{
+if MsgBox("Do you want to update configs data" ,, "YesNo")="Yes"
+{
+    RunWait(A_ScriptDir . "\UpdateConfigs.ahk")
+    PopularConfigGuiShow
+}
+else
+{
+    PopularConfigGuiShow
+}
 }
 UpdateSaveFile()
 MyGui.Show()

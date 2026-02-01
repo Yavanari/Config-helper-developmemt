@@ -45,3 +45,6 @@ Lang["sp"] := Map(
     "Import3", "Si la config esta mal hecha entonces puedes usar el `n`"seleccionado manual`" Entonces ahi buscas los archivos de texto `nde estrategia, equipo, coordenadas, en que equipo lo quieres `nNota: Viejas configs que tengas en todo esto seran remplazadas `npor las nuevas, una vez lo hagas simplemente juega",
     "Export1", "selecciona el modo de juego mapa , equipo que quieres exportar y `ndale al boton de exportar tambien te preguntara si quieres exportar `nlas habilidades de la unidades, montura, modificadores Tambien puedes `ncambiar el nombre de tus exportaciones una vez importes estas estaran `nen la carpeta de ExportConfigs"
 )
+Lang["vn"]:=Map(
+
+)

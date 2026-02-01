@@ -2,6 +2,8 @@
 #Include AntiGreenieProtection.ahk
 #Include ConfigHelper.ahk
 #Include Language.ahk
+#Include Debug.ahk
+UpdateColors
 global GuideGui:=Gui("-Caption 2")
 SelectLangGui:=Gui("-Caption 2")
 SelectLangGui.SetFont("bold " . "c" TextColor . " s11", "Arial")

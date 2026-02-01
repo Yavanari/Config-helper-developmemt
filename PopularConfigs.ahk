@@ -2,7 +2,6 @@
 #SingleInstance Force
 #Include ConfigHelper.ahk
 #Include  DeepLink.ahk
-UpdateColors()
 UpdateVariable(*) 
 {     
     global AutoImport := AutoImportCheckBox.Value 
@@ -10,29 +9,26 @@ UpdateVariable(*)
 ; Data for popular configs
 PopularConfigGuiShow(*)
 {
+UpdateColors()
 global AutoImport:=1
+global ConfigData := []
 global PopularConfigGui := Gui("-Caption")
-global ConfigData := [
-    { name: "Anni act 9(Cheez) 2:00 CT", image: "\Assets\CheezAct9.png", gamemode: "Event Anni" , y_start: 80,  x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1vejTGJpCf70PB5AgC3bEBwVQxGo_ueu8", discordLink: "https://discord.com/channels/1309512479386243072/1436697408582189128" },
-    { name: "Escanor All Rifts(Hiccup) NO ONE PIECE RIFT", image: "\Assets\EscanorAllRifts.png", gamemode: "Rift" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1Li-uKHP29GjytDeZJHbl8KRA9_A_Jc4q", discordLink: "https://discord.com/channels/1309512479386243072/1438337915645333604" },
-    { name: "Anni act 9(Anself) 1:50 CT", image: "\Assets\AnsAct9.png",  gamemode: "Event Anni" ,y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1Q1A6I5fKXz0SEb-eakEKLgGanjbzqlrk", discordLink: "https://discord.com/channels/1309512479386243072/1449132950762422445" },
-    { name: "Escanor Solo Cid Act 2(Hiccup) 5:00 CT", image: "\Assets\EscanorAllRifts.png",  gamemode: "Raid" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1kxHoylw0ZaH6aFKF2YNIiFivPo8EWYtg", discordLink: "https://discord.com/channels/1309512479386243072/1435817560011706442" },
-    { name: "Jeju_Island(Hiccup) 20:00 CT",    image: "\Assets\JejuIslandHiccup.png",  gamemode: "Dungeon" ,  y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1n1Z8Nbsc8jEyr3JLK_F2M-kINBRHIcmx", discordLink: "https://discord.com/channels/1309512479386243072/1445200628602245294" }, 
-    { name: "Dio OH Cid Act 2 (Hiccup) 8:00 CT", image: "\Assets\DIoCidAct2.png",  gamemode: "Raid" ,y_start: 220,  x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1apsf_8bUn2yehHc3eY6SzqNfHoUVykEp", discordLink: "https://discord.com/channels/1309512479386243072/1445911411279794297" },
-    { name: "Sasuke Cid Act 2 (Gnoemy) ~2:45 CT",   image: "\Assets\CidSasuke.png",  gamemode: "Raid" ,y_start: 360, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1ftWyLr4bNA6RNx6Ft37MAwcI7VgVh8d9", discordLink: "https://discord.com/channels/1309512479386243072/1444442525359276192" },
-    { name: "Frozen Volcano Freeza",   image: "\Assets\FreezaFrozenVolcano.png",   gamemode: "Dungeon" ,y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1reMrrVfvRWgFFxmi7tV9YF8dw_rbc9rv", discordLink: "https://discord.com/channels/1309512479386243072/1374915274855284798" },
-    { name: "Merikatori P2W config", image:"\Assets\MeriConfig.png", gamemode: "All" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1-f7dQKIrmerFGAK8LQQYqGhTwTyfmrk0", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
-    { name: "Merikatori F2P config", image:"\Assets\MeriConfig.png", gamemode: "All", y_start: 80, x_col: 2, downloadLink: "https://drive.google.com/uc?export=download&id=1z7nfHRuxSQJ0lUfdptlKKv-3bQDTHZ0C", discordLink: "https://discord.com/channels/1309512479386243072/1435701109980266668"},
-    { name: "Fall Infinite (Kxizen)", image:"\Assets\FallInfKxizen.png",  gamemode: "Infinite" , y_start: 220, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1OJlvUCkE-Xjm4MCeNmY1edkG7zDCqzoZ", discordLink: "https://discord.com/channels/1309512479386243072/1448913041638035576"},
-    { name: "Fall Regular 3 Monarchs (Hiccup) 9:00 CT", image:"\Assets\FallRegular3Mon.png", gamemode: "Event Ainz" ,y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1CjwD8hzDjRg3XnlXsaO92sheEwCl53Uw", discordLink: "https://discord.com/channels/1309512479386243072/1449833858324369409"},
-    { name: "Fall Infinite (FunnyValentine)", image:"\Assets\FallInfValentine.png",  gamemode: "Infinite" , y_start: 80, x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=1PcG5k6KUCLcWH2gobI1uR1FJ2rLWvBPg", discordLink:"https://discord.com/channels/1309512479386243072/1458687130623541248"},
-    { name: "Solo Escanor HAPPY Factory(Zad) ~5:30 CT" , image: "\Assets\EscanorAllRifts.png" , gamemode: "Raid" , y_start: 80, x_col: 2, downloadLink: "https://drive.google.com/uc?export=download&id=1RpUG_mC0zlDv1Jy0-o1N06p34NDUt6RX", discordLink:""},
-    { name: "Frozen Port wave 20 reset(Alligator) ~12:00 CT" , image:"\Assets\MeriConfig.png", gamemode: "Frozen Port" , y_start: 80 , x_col: 1, downloadLink: "https://drive.google.com/uc?export=download&id=179TM6I9KyNxt_WT9V7W7whdbavnI4BPI", discordLink: "https://discord.com/channels/1309512479386243072/1460623551789924535" },
-    { name: "Shank's rift(Mericatori) READ INFO IN CONFIG LINK" , image: "\Assets\ShanksRiftMeri.png", gamemode: "Rift",  y_start: 220, x_col: 1, downloadlink: " https://drive.google.com/uc?export=download&id=1vSf7U661bKJLWMlMSNsf4HxN6OfieTwq" , discordlink: "https://discord.com/channels/1309512479386243072/1460690201029644394"},
-    { name: "One piece rift Uma(Mericatori)" , image: "\Assets\RiftUmaMeri.png" , gamemode: "Rift" , y_start: 360 , x_col: 1 , downloadLink: "https://drive.google.com/uc?export=download&id=1WrQoBeo812BZRmLaZt6mS4fRdd3Pa7N6" , discordLink: "https://discord.com/channels/1309512479386243072/1461428543220088968"},
-    { name: "Anni act 9(Nika) 1:40 CT" , image: "\Assets\NikaAct9.png" , gamemode: "Event Anni" , y_start: 360 , x_col: 1 , downloadLink: "https://drive.google.com/uc?export=download&id=1_QHrobJqD9Wn8iMyxiAc2L5VFY09GQof" , discordLink: "https://discord.com/channels/1309512479386243072/1461442177635975198"}
-
-]
+IniFile := A_ScriptDir "\configs.ini"
+Loop Parse, IniRead(IniFile), "`n", "`r" 
+    {
+        sec := A_LoopField
+        if (sec = "")
+            continue
+        ConfigData.Push({
+            name:         IniRead(IniFile, sec, "name"),
+            image:        IniRead(IniFile, sec, "image"),
+            gamemode:     IniRead(IniFile, sec, "gamemode"),
+            y_start:      Number(IniRead(IniFile, sec, "y_start", 80)),
+            x_col:        Number(IniRead(IniFile, sec, "x_col", 1)),
+            downloadLink: IniRead(IniFile, sec, "downloadLink"),
+            discordLink:  IniRead(IniFile, sec, "discordLink", "")
+        })
+    }
 X_COL1_TEXT := 30
 X_COL1_BUTTONS := 450   
 X_COL2_TEXT := 600

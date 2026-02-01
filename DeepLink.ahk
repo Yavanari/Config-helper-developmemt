@@ -1,6 +1,5 @@
 #Include PopularConfigs.ahk
 #Include ConfigHelper.ahk
-global DownloadLinkManual:=""
 DeepLink(*)
 {
 global AutoImport:=1
@@ -24,7 +23,6 @@ if (CurrentReg != Action) {
 }
 if (A_Args.Length > 0) 
 {
-    global AutoImportCheckBox
     RawUrl := A_Args[1]
     TargetUrl := StrReplace(RawUrl, Protocol "://download/?url=", "")
     MyGui.Hide()

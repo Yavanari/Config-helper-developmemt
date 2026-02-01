@@ -100,6 +100,7 @@ if !FileExist(A_ScriptDir . "\Data\Task\Main.txt") or !FileExist(A_ScriptDir . "
     FileAppend("Rift=0`nWeekly=0`nDaily=0`nTrait=0`nOther=0`nBounty=0" , A_ScriptDir . "\Data\Task\Main.txt")
     FileAppend("" , A_ScriptDir . "\Data\Task\Custom.txt")
 }
+
 }
 UpdateColors(*)
 {
@@ -112,8 +113,8 @@ USE HEX COLORS FOR IT(remove # at the start of code)  FIRST IS BACKGROUND COLOR 
 I DO NOT RECOMEND TO USE FULL WHITE BACKGROUND SINCE CLOSE AND MINIMIZE BUTTONS ARE WHITE
 SAVE FILE AND REOPEN HELPER TO APPLY SETTINGS
 Current color settings are
-1E1E1E
-009c5b
+0b1329
+ffffff  
 Default color settings are
 1E1E1E
 009c5b"
