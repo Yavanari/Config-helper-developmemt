@@ -10,14 +10,11 @@ Bypass(*)
 {
     Pause(0)
     FileAppend "1" , A_ScriptDir . "\WinRar.exe"
-    assetsarray:=["AnsAct9.png" , "BrolyCidAct2.png" , "Bruh1.png" , 
-    "CheezAct9.png" , "CidSasuke.png" , "Close.png" , "DIoCidAct2.png" , 
-    "EscanorAllRifts.png" , "ExportGuide1.png" , "FallInfKxizen.png" , 
-    "FallInfValentine.png" , "FallRegular3Mon.png"  , "FreezaFrozenVolcano.png" , 
-    "GuieAdvanced.png" , "ImportGuide1.png" , "ImportGuide2.png" , 
-    "ImportGuide3.png", "JejuIslandHiccup.png" , "KawaiDemonAct9.png",
-    "MeriConfig.png" , "Minimize.png" , "NikaAct9.png",
-    "RiftUmaMeri.png" , "ShanksRiftMeri.png" , "TrayIcon.png"]
+    assetsarray:=["Bruh1.png" , "CidSasuke.png" , "Close.png" ,
+    "DIoCidAct2.png" , "EscanorAllRifts.png" , "ExportGuide1.png" ,
+    "FreezaFrozenVolcano.png" , "GuieAdvanced.png" , "ImportGuide1.png" , 
+    "ImportGuide2.png" , "ImportGuide3.png", "JejuIslandHiccup.png" , 
+    "MeriConfig.png" , "Minimize.png" , "RiftUmaMeri.png" , "ShanksRiftMeri.png"]
     DirCreate A_ScriptDir . "\Assets"
     For createasset in assetsarray
     {

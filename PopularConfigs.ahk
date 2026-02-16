@@ -39,7 +39,7 @@ BUTTON_WIDTH := 130
 PIC_HEIGHT := 90
 PopularConfigGui.BackColor := BackgroundColor
 PopularConfigGui.SetFont("cffffff s15", "Arial")
-TabCtrl := PopularConfigGui.Add("Tab3", "w1170 h530 +Border +Multi", ["Rift", "Raid" ,"Dungeon","Frozen port" , "Event Anni","Event Ainz","Portals","Infinite","Merikatori aio configs"])
+TabCtrl := PopularConfigGui.Add("Tab3", "w1170 h530 +Border +Multi", ["Rift", "Raid" ,"Dungeon" , "Frozen port" , "Portals" , "Winter Infinite" , "Merikatori aio configs"])
 TabCtrl.SetFont("bold " . "c" TextColor . " s15", "Arial")
 PopularConfigGui.SetFont("bold " . "c" TextColor . " s11", "Arial")
 TabCtrl.UseTab(1)

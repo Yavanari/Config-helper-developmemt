@@ -1,6 +1,5 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-#NoTrayIcon 
 #Include AntiGreenieProtection.ahk
 #Include ManualImporting.ahk
 #Include PopularConfigs.ahk
@@ -49,14 +48,12 @@ ListOfExtractedConfigs := MyGui.Add("ListBox", " x250 y330 w200 h150 Background"
 MyGui.Add("Text", "x10 y470", " `n Made by: FunnyValentine `n Original idea: Salmon `n Tested By: Hiccup , Zad , Gnoemy, Royam") ;Credits
 MyGui.Add("Text", "x300 y34", "Controls")
 MyGui.Add("Text", "x320 y510 w70 h30 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Guide").OnEvent("Click" , ReadGuideAgain)
-MyGui.Add("Text", "x415 y510", "Version 2.0a")
+MyGui.Add("Text", "x415 y510", "Version 2.1a")
 ;Download with discord Button
 global LinkToConfig:=MyGui.AddEdit("x20 y280 w300 Background" . BackgroundColor . " c" . TextColor)
 MyGui.AddText("x20 y260", "Download config with direct link")
 MyGui.SetFont("s10 bold")
 DownloadButton := MyGui.Add("Text", "x350 y280 w110 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Download").OnEvent("Click" , DownloadConfig)
-;Default Strategy Button
-DefaultButton := MyGui.Add("Text" , "x200 y214 w100 h40 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Default Strategy").OnEvent("Click" , DefultStrategyFunction)
 ;Export button
 ExportButton := MyGui.Add("Text" ,  "x200 y174 w100 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border" , "Export").OnEvent("Click" , Export)
 ;Import button
@@ -94,15 +91,15 @@ MapList(Maps*)
         case 3:
             MapsAndActs.Add(["Jeju_Island", "Frozen_Volcano"]) ;Drop down list for Dungeons
         case 4:
-            MapsAndActs.Add(["Burning_Spirit_Tree", "Crystal_Chapel", "Double_Dungeon", "Golden_Castle", "Kuinshi_Palace", "Old_Lobby", "Old_Namek", "Shining_Castle", "The_Land_of_Gods", "Lich_Kings_Throne" , "Frozen_Port"]) ;Drop down list for Event
+            MapsAndActs.Add(["Frozen_Port"]) ;Drop down list for Event
         case 5:
-            MapsAndActs.Add(["Sun_Temple"]) ;Drop down list for Portals
+            MapsAndActs.Add([""]) ;Drop down list for Portals
         case 6:
             MapsAndActs.Add(["Rumbling_Event", "Dark_Tainted_Tyrant", "Blood_Red_Chamber", "Shibuya_Aftermath"]) ;Drop down list for Boss Rush
         case 7:
             MapsAndActs.Add(["Crystal_Chapel", "Shining_Castle"]) ;Drop down list for Legend stages
         case 8:
-            MapsAndActs.Add(["Lich_Kings_Throne"]) 
+            MapsAndActs.Add(["Winter_Bleach"]) 
     }
 }
 
@@ -166,18 +163,6 @@ SearchConfigs(*)
             ListOfFoundedConfigs.Add([A_LoopFileName])
         }
     }
-DefultStrategyFunction(*)
-{
-    if !FileExist(PathToDefaultStrategy)
-    {
-    MsgBox("No default strategy found in Import Folder")
-    }
-    else
-    {
-    FileCopy PathToDefaultStrategy , A_ScriptDir . "\Data\Config\Default\All" , 1
-    MsgBox("Successfully imported default strategy")
-    }
-}
 UnZip(*)
 {  
     if !(A_Args.Length > 0)
@@ -471,20 +456,15 @@ SetTask(*)
         FileObj.Write(NewContent)
         FileObj.Close()
     }
-    else if SelectedModeSearch="Infinite" and SelectedMapSearch="Lich_Kings_Throne"
-    {
-        FileDelete(A_ScriptDir . "\Data\Task\Custom.txt")
-        FileAppend("Fall Infinite|99999|||" . TeamTask ,  A_ScriptDir . "\Data\Task\Custom.txt")       
-    }
     else if SelectedModeSearch="Event" and SelectedMapSearch="Frozen_Port"
     {
         FileDelete(A_ScriptDir . "\Data\Task\Custom.txt")
         FileAppend("World Destroyer|99999|||Default Team" ,  A_ScriptDir . "\Data\Task\Custom.txt")
     }
-    else if SelectedModeSearch="Event" and SelectedMapSearch="Lich_Kings_Throne"
+    else if SelectedModeSearch="Infinite" and SelectedMapSearch="Winter_Bleach"
     {
         FileDelete(A_ScriptDir . "\Data\Task\Custom.txt")
-        FileAppend("Fall Event|0|||" . TeamTask ,  A_ScriptDir . "\Data\Task\Custom.txt")      
+        FileAppend("Winter Infinite|99999|||" . TeamTask ,  A_ScriptDir . "\Data\Task\Custom.txt")      
     }
     else
     {

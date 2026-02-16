@@ -32,11 +32,11 @@ ManualUpdateMapList(SourceCtrl, TargetMapCtrl) {
         case 1: TargetMapCtrl.Add(["Kuinshi_Palace", "Mountain_Shrine", "Underground_Church"])
         case 2: TargetMapCtrl.Add(["Spider_Forest", "Ruined_City", "Jojo_1", "Jojo_2"])
         case 3: TargetMapCtrl.Add(["Jeju_Island", "Frozen_Volcano"])
-        case 4: TargetMapCtrl.Add(["Burning_Spirit_Tree", "Crystal_Chapel", "Double_Dungeon", "Golden_Castle", "Kuinshi_Palace", "Old_Lobby", "Old_Namek", "Shining_Castle", "The_Land_of_Gods", "  "])
+        case 4: TargetMapCtrl.Add(["Frozen_Port"])
         case 5: TargetMapCtrl.Add(["Sun_Temple"])
         case 6: TargetMapCtrl.Add(["Rumbling_Event", "Dark_Tainted_Tyrant", "Blood_Red_Chamber", "Shibuya_Aftermath"])
         case 7: TargetMapCtrl.Add(["Crystal_Chapel", "Shining_Castle"])
-        case 8: TargetMapCtrl.Add(["Lich_Kings_Throne"])
+        case 8: TargetMapCtrl.Add(["Winter_Bleach"])
     }
 }
 ManualImportingAction(*)
