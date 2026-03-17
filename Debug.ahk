@@ -40,12 +40,15 @@ CheckFolders(*)
     }
     Loop Files, ImportConfigs . "\AutoDetect.txt", "RF"
     {
+        if A_LoopFileFullPath == ImportConfigs . "\AutoDetect.txt"{
+            continue
+        }
        AmountOfCorrectFoldersInImport++
     }
     MsgBox("Total config folders: " AmountOfFoldersInImport "`nTotal correct format folder: "  AmountOfCorrectFoldersInImport "`n(if autodetect.txt exist means that config was made with helper `nthat mean it fully supported)")  
 
 }
-DeleteFolders(*)
+DeleteFolders(*)    
 {
     DirDelete A_ScriptDir . "\Data" , 1
     DirDelete ImportConfigs , 1
@@ -63,6 +66,7 @@ Reload1(*)
 {
     Reload
 }
+
 F1::
 {
     DebugGui.Show

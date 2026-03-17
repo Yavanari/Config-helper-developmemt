@@ -39,7 +39,7 @@ BUTTON_WIDTH := 130
 PIC_HEIGHT := 90
 PopularConfigGui.BackColor := BackgroundColor
 PopularConfigGui.SetFont("cffffff s15", "Arial")
-TabCtrl := PopularConfigGui.Add("Tab3", "w1170 h530 +Border +Multi", ["Rift", "Raid" ,"Dungeon" , "Frozen port" , "Portals" , "Winter Infinite" , "Merikatori aio configs"])
+TabCtrl := PopularConfigGui.Add("Tab3", "w1170 h530 +Border +Multi", ["Rift", "Raid" ,"Dungeon" , "Frozen port" , "Portals" , "Winter" , "Merikatori aio configs"])
 TabCtrl.SetFont("bold " . "c" TextColor . " s15", "Arial")
 PopularConfigGui.SetFont("bold " . "c" TextColor . " s11", "Arial")
 TabCtrl.UseTab(1)
@@ -105,7 +105,12 @@ DownloadConfigHandler(url, *)
         }
         }
         global SelectedConfigFolder:=LatestPath
-        global AutoDetectRead:=FileRead(ImportConfigs . "\" . SelectedConfigFolder . "\AutoDetect.txt") 
+        try global AutoDetectRead:=FileRead(ImportConfigs . "\" . SelectedConfigFolder . "\AutoDetect.txt") 
+        catch Error as OutputVar
+        {
+            MsgBox("Download was corrupted , delete Import Configs folder and import again")
+            ExitApp
+        } 
         Lines := StrSplit(AutoDetectRead, "`n", "`r") 
         global AutoGamemode:=Lines[1]
         global AutoMap:=Lines[2]
@@ -113,6 +118,8 @@ DownloadConfigHandler(url, *)
         global SelectedMapSearch:=AutoMap
         global SelectedMode:=1
         global SelectedMap:=1
+        if (AutoGamemode != "Winter Regular") AND (AutoMap != "Winter Regular")
+        {
         v:=Gui("-Caption 2 +AlwaysOnTop")
         v.SetFont("bold c1E1E1E s9", "Arial")
         v.BackColor:= BackgroundColor
@@ -123,6 +130,7 @@ DownloadConfigHandler(url, *)
         Pause
         global SelectedTeam:=TeamAuto.Text
         v.Destroy()
+        }
         SearchConfigs()
         if DirExist(ImportConfigs . "\" . LatestPath . "\Mount")
         {

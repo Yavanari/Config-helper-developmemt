@@ -34,7 +34,7 @@ MyGui.SetFont("bold " . "c" TextColor . " s9", "Arial")
 ListOfMountsImport:=[]
 global ImportingTeam :=""
 MyGui.Add("Text", "x20 y84", "Gamemode:",)
-Gamemode := MyGui.AddComboBox("vGamemode w130 Background" . BackgroundColor , ["Rift", "Raid", "Dungeon", "Event", "Portals", "BossRush", "LegendStage" , "Infinite"]) ; Drop down menu to choose gamemode
+Gamemode := MyGui.AddComboBox("vGamemode w130 Background" . BackgroundColor , ["Rift", "Raid", "Dungeon", "Event", "Portals", "BossRush", "LegendStage" , "Infinite" , "Winter Regular"]) ; Drop down menu to choose gamemode
 MyGui.Add("Text", "x20 y184", "Team: ")
 Team:=MyGui.AddDropDownList("vTeam w130 Background" . BackgroundColor . " c" . TextColor,["Team1", "Team2", "Team3", "Team4", "Team5", "Team6", "Team7", "Team8",]) ; Drop down menu to choose team
 MyGui.Add("Text", "x20 y134", "Map: ")
@@ -48,7 +48,7 @@ ListOfExtractedConfigs := MyGui.Add("ListBox", " x250 y330 w200 h150 Background"
 MyGui.Add("Text", "x10 y470", " `n Made by: FunnyValentine `n Original idea: Salmon `n Tested By: Hiccup , Zad , Gnoemy, Royam") ;Credits
 MyGui.Add("Text", "x300 y34", "Controls")
 MyGui.Add("Text", "x320 y510 w70 h30 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Guide").OnEvent("Click" , ReadGuideAgain)
-MyGui.Add("Text", "x415 y510", "Version 2.1a")
+MyGui.Add("Text", "x415 y510", "Version 2.1e")
 ;Download with discord Button
 global LinkToConfig:=MyGui.AddEdit("x20 y280 w300 Background" . BackgroundColor . " c" . TextColor)
 MyGui.AddText("x20 y260", "Download config with direct link")
@@ -100,39 +100,42 @@ MapList(Maps*)
             MapsAndActs.Add(["Crystal_Chapel", "Shining_Castle"]) ;Drop down list for Legend stages
         case 8:
             MapsAndActs.Add(["Winter_Bleach"]) 
+        case 9:
+            MapsAndActs.Add(["Winter Regular"])
     }
 }
 
 UpdateSaveFile(*)
 {   
     ;Gettings all nessesary varriables
+    global SelectedConfigFolder:=ConfigFolder.Text
+    SearchConfigs()
     global ListOfMountsImport:=[]
     global SelectedMode := Gamemode.Value
     global SelectedMap := MapsAndActs.Value
     global SelectedMapSearch:=MapsAndActs.Text
     global SelectedModeSearch:=Gamemode.Text
     global SelectedTeam:=Team.Text
-    global SelectedConfigFolder:=ConfigFolder.Text
     global PathToDeleteFodler:= ImportConfigs  . "\" .  SelectedConfigFolder
+
     ConfigFolder.Delete()
     loop files, ImportConfigs "\*", "D"
     {   
         ConfigFolder.Add([A_LoopFileName])
     }
     try ConfigFolder.Choose(SelectedConfigFolder) 
-        SearchConfigs()
 }
 SearchConfigs(*)
 {
     if FileExist(ImportConfigs . "\" . SelectedConfigFolder . "\AutoDetect.txt") and (SelectedConfigFolder != "")
-    { 
+    {
         FileContent := FileRead(ImportConfigs . "\" . SelectedConfigFolder . "\AutoDetect.txt")
         Lines := StrSplit(FileContent, "`n", "`r") 
         global ConfigGamemode:=Lines[1]
         global ConfigMap:=Lines[2]
-        Gamemode.Text:=ConfigGamemode
+        Gamemode.Text := ConfigGamemode
         MapList()
-        MapsAndActs.Text:=ConfigMap
+        MapsAndActs.Text := ConfigMap
     } 
     SelectedMapSearch := MapsAndActs.Text
     global ListOfConfigs := []
@@ -229,7 +232,13 @@ Import(*)
         Gamemode.Delete()
         return    
     }
-    if (SelectedMode = 0) && (SelectedMap = 0) || (ListOfConfigs.Length = 0)
+    if (SelectedModeSearch =  "Winter Regular") AND (SelectedMapSearch = "Winter Regular") 
+    {
+        DirCopy ImportConfigs . "\" . SelectedConfigFolder "\Event" , A_ScriptDir . "\Data\Config\Event" , 1
+        MsgBox("Successfully imported")
+        return    
+    }
+    if ((SelectedMode = 0) && (SelectedMap = 0) || (ListOfConfigs.Length = 0)) 
     {
         MsgBox "You didnt choose Gamemode and Map `nOr no configs found for this map `nMake sure you selected right Config Folder"
         return
@@ -255,7 +264,7 @@ Import(*)
         }
         if DirExist(ImportConfigs . "\" . SelectedConfigFolder . "\Unit_Ability")
         {
-            loop files , ImportConfigs . "\" . SelectedConfigFolder . "\Unit_Ability\*.txt"
+            loop files , ImportConfigs . "\" . SelectedConfigFolder . "\Unit_Ability\*"
             {
                 FileCopy A_LoopFileFullPath , A_ScriptDir . "\Data\Config\Unit_Ability" , 1
             } 
@@ -279,7 +288,7 @@ Export(*)
         MsgBox "You didnt choose Gamemode and Map"
         return
     }
-    else
+    if (SelectedModeSearch != "Winter Regular") && (SelectedMapSearch !=  "Winter Regular")
     {
         global TempDir := A_ScriptDir . "\TempExport\" . SelectedModeSearch . "_" . SelectedMapSearch
         global TempMapDir:= TempDir . "\" . SelectedMapSearch
@@ -288,73 +297,85 @@ Export(*)
         try DirDelete TempDir, 1
         DirCreate TempMapDir 
         DirCreate TempTeamDir
-        ModifiersConfigPath:=A_ScriptDir . "\Data\Config\"  . SelectedModeSearch . "\*.txt"
-        UnitAbilityPath:=A_ScriptDir . "\Data\Config\Unit_Ability"
-        ExportingConfigFromData := A_ScriptDir . "\Data\Config\"  . SelectedModeSearch . "\" . SelectedMapSearch
-        if FileExist(A_ScriptDir . "\Data\Config\Team\" . SelectedTeam . ".txt")
-        {
-        try FileCopy A_ScriptDir . "\Data\Config\Team\" . SelectedTeam . ".txt" , TempTeamDir
-        }
-        loop files , ExportingConfigFromData  "\*.txt"
-        {   
-            ConfigFileName:=A_LoopFileFullPath
-            FileCopy ConfigFileName, TempMapDir
-        }
-        if FileExist(ModifiersConfigPath)
-        {
-            if MsgBox("Do you want to export Config.txt (modifiers)?",, "YesNo") = "Yes"
+
+            ModifiersConfigPath:=A_ScriptDir . "\Data\Config\"  . SelectedModeSearch . "\*.txt"
+            UnitAbilityPath:=A_ScriptDir . "\Data\Config\Unit_Ability"
+            ExportingConfigFromData := A_ScriptDir . "\Data\Config\"  . SelectedModeSearch . "\" . SelectedMapSearch
+            if FileExist(A_ScriptDir . "\Data\Config\Team\" . SelectedTeam . ".txt")
             {
-            try FileCopy ModifiersConfigPath , TempDir
+            try FileCopy A_ScriptDir . "\Data\Config\Team\" . SelectedTeam . ".txt" , TempTeamDir
             }
-        }
-        if DirExist(UnitAbilityPath)
-        {
-            if MsgBox("Do you want to export Unit Abilities",, "YesNo") = "Yes"
+            loop files , ExportingConfigFromData  "\*.txt"
+            {   
+                ConfigFileName:=A_LoopFileFullPath
+                FileCopy ConfigFileName, TempMapDir
+            }
+            if FileExist(ModifiersConfigPath)
             {
-            TempAbilityDir:=TempDir . "\Unit_Ability"
-            DirCreate TempAbilityDir
-            SelectUnitAbilitiesExplorer:=FileSelect("M3", UnitAbilityPath , "Select unit abilities to export", "All Files (*.*)")
-            for AbilityToExport in SelectUnitAbilitiesExplorer
+                if MsgBox("Do you want to export Config.txt (modifiers)?",, "YesNo") = "Yes"
+                {
+                try FileCopy ModifiersConfigPath , TempDir
+                }
+            }
+            if DirExist(UnitAbilityPath)
             {
-                try FileCopy AbilityToExport , TempAbilityDir             
+                if MsgBox("Do you want to export Unit Abilities",, "YesNo") = "Yes"
+                {
+                TempAbilityDir:=TempDir . "\Unit_Ability"
+                DirCreate TempAbilityDir
+                SelectUnitAbilitiesExplorer:=FileSelect("M3", UnitAbilityPath , "Select unit abilities to export", "All Files (*.*)")
+                for AbilityToExport in SelectUnitAbilitiesExplorer
+                {
+                    try FileCopy AbilityToExport , TempAbilityDir             
+                }
+                }
             }
-            }
-        }
-        if (ExportingConfigFromData=A_ScriptDir . "\Data\Config\Raid\Ruined_City")
-        {
-            global TempMountDir:=TempDir . "\Mount"
-            DirCreate TempMountDir
-            MountsSelected:=FileSelect("M3", A_ScriptDir "\Data\Roblox\Mount", "Select Mount Configs", "All Files (*.*)")
-            for MountToExport in MountsSelected
+            if (ExportingConfigFromData=A_ScriptDir . "\Data\Config\Raid\Ruined_City")
             {
-            FileCopy MountToExport  , TempMountDir
+                global TempMountDir:=TempDir . "\Mount"
+                DirCreate TempMountDir
+                MountsSelected:=FileSelect("M3", A_ScriptDir "\Data\Roblox\Mount", "Select Mount Configs", "All Files (*.*)")
+                for MountToExport in MountsSelected
+                {
+                FileCopy MountToExport  , TempMountDir
+                }
+                
             }
-            
-        }
-        if (SelectedMode != 0) && (SelectedMap != 0)
-        {
-        MyGui.Hide
-        global g:=Gui("-Caption 2 +AlwaysOnTop")
-        g.SetFont("bold c1E1E1E s9", "Arial")
-        g.BackColor:= BackgroundColor
-        g.AddText("X30 y10 Center c" . TextColor , "Enter Config name")
-        ConfigNameEdit:=g.AddEdit("x10 y40")
-        Export:=g.Add("Text", "x45 y70 w70 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Export").OnEvent("Click" , (*) => Pause(0))
-        g.Show()
-        Pause
-        ConfigName:=ConfigNameEdit.Value
-        FileAppend(AutoDetect , TempDir . "\AutoDetect.txt")
-        DirMove TempDir , A_ScriptDir . "\TempExport\" . ConfigName , 1
-        global ExportingPath:=ExportConfig . "\" . ConfigName . ".zip"
-        g.Destroy()
-        RunWait "PowerShell.exe -Command Compress-Archive -Path '"  A_ScriptDir . "\TempExport\" . ConfigName "' -DestinationPath '" ExportingPath "' -Force"
-        MsgBox("Successfully exported" )
-        MyGui.Show
-        DirDelete A_ScriptDir . "\TempExport\" , 1
-        }
+    }
+    else
+    {
+        global TempDir := A_ScriptDir . "\TempExport\" . SelectedModeSearch . "_" . SelectedMapSearch
+        global TempMapDir := TempDir . "\Event"
+        try DirDelete TempDir, 1
+        DirCreate TempMapDir
+        FileCopy(A_ScriptDir . "\Data\Config\Event\WinterBleachRegularStrat.json" , TempMapDir , 1)
+        FileCopy(A_ScriptDir . "\Data\Config\Event\WinterBleachRegularCoordinate.json" , TempMapDir , 1)
+        AutoDetect:=SelectedModeSearch . "`n" . SelectedMapSearch
+    }
+    if (SelectedMode != 0) && (SelectedMap != 0)
+    {
+    MyGui.Hide
+    global g:=Gui("-Caption 2 +AlwaysOnTop")
+    g.SetFont("bold c1E1E1E s9", "Arial")
+    g.BackColor:= BackgroundColor
+    g.AddText("X30 y10 Center c" . TextColor , "Enter Config name")
+    ConfigNameEdit:=g.AddEdit("x10 y40")
+    Export:=g.Add("Text", "x45 y70 w70 h25 Center Background" . BackgroundColor . " c" . TextColor " +Border", "Export").OnEvent("Click" , (*) => Pause(0))
+    g.Show()
+    Pause
+    ConfigName:=ConfigNameEdit.Value
+    FileAppend(AutoDetect , TempDir . "\AutoDetect.txt")
+    DirMove TempDir , A_ScriptDir . "\TempExport\" . ConfigName , 1
+    Pause
+    global ExportingPath:=ExportConfig . "\" . ConfigName . ".zip"
+    g.Destroy()
+    RunWait "PowerShell.exe -Command Compress-Archive -Path '"  A_ScriptDir . "\TempExport\" . ConfigName "' -DestinationPath '" ExportingPath "' -Force"
+    MsgBox("Successfully exported" )
+    MyGui.Show
+    DirDelete A_ScriptDir . "\TempExport\" , 1
+    }
     }
 UpdateSaveFile()
-}
 ImportMountForCid(*)
 {
     UpdateSaveFile()
